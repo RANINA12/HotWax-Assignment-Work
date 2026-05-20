@@ -1,3 +1,65 @@
+# Relationship Manager Component
 
-The files in this directory are used as templates for the ant create-component target, +
-please do not modify them without understanding the effect that it will have on that build target.
+## Overview
+This project is an assignment-based Apache OFBiz component focused on Party and Contact Mechanism management.
+
+The objective of this assignment was to understand the OFBiz entity model, service layer, UI screens, forms, and seed/demo data creation by implementing a custom component.
+
+## Features Implemented
+
+### Party Management
+Implemented entities and related logic for Party management, including:
+
+- Person creation
+- Party Group creation
+- Party entity relationships
+- Party type configurations
+
+### Contact Mechanism Management
+Implemented Contact Mechanism related functionalities, including:
+
+- Email Address creation
+- Postal Address creation
+- Telecom Number creation
+- Contact Mechanism association with Party
+
+## Data Configuration
+Created required data files for:
+
+- Seed data
+- Demo data
+- Type data configuration
+
+## UI Implementation
+Designed OFBiz UI components including:
+
+- Screens
+- Forms
+- Menus
+- Labels
+- Controller mappings
+
+## Services
+Implemented service definitions and Groovy service scripts for:
+
+- Creating Person and Party records
+- Creating Party Group records
+- Creating Email Contact Mechanism
+- Creating Postal Address Contact Mechanism
+- Creating Telecom Number Contact Mechanism
+
+## Component Structure
+```text
+relationshipmgr/
+├── GroovyScripts/
+├── config/
+├── data/
+├── entitydef/
+├── servicedef/
+├── testdef/
+├── webapp/
+├── widget/
+├── build.gradle
+├── ofbiz-component.xml
+├── README.md
+```
