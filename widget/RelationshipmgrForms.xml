@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://ofbiz.apache.org/Widget-Form" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Form http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="AddParty" type="single" target="createParty">
+        <auto-fields-service service-name="createParty"/>
+
+        <field name="partyTypeId" title="${uiLabelMap.PartyType}">
+            <drop-down allow-empty="false">
+                <entity-options description="${description}"
+                                key-field-name="partyTypeId"
+                                entity-name="PartyType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+
+        <!-- FIXED: Now uses standard StatusItem to prevent Foreign Key errors -->
+        <field name="statusId" title="${uiLabelMap.CommonStatus}">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="StatusItem" description="${description}">
+                    <entity-constraint name="statusTypeId" value="PARTY_STATUS"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+        <form name="AddPerson" type="single" target="createPersonAndParty">
+
+
+    <field name="partyTypeId">
+        <hidden value="PERSON"/>
+    </field>
+    <field name="statusId" title="${uiLabelMap.CommonStatus}">
+        <drop-down allow-empty="false">
+            <entity-options entity-name="StatusItem" description="${description}">
+                <entity-constraint name="statusTypeId" value="PARTY_STATUS"/>
+                <entity-order-by field-name="sequenceId"/>
+            </entity-options>
+        </drop-down>
+    </field>
+
+
+    <field name="salutation"  title="${uiLabelMap.PartySalutation}">
+        <drop-down allow-empty="true">
+            <option key="Mr."  description="Mr."/>
+            <option key="Ms."  description="Ms."/>
+            <option key="Mrs." description="Mrs."/>
+            <option key="Dr."  description="Dr."/>
+            <option key="Prof." description="Prof."/>
+        </drop-down>
+    </field>
+    <field name="firstName"   title="${uiLabelMap.PartyFirstName}">
+        <text/>
+    </field>
+    <field name="middleName"  title="${uiLabelMap.PartyMiddleName}">
+        <text/>
+    </field>
+    <field name="lastName"    title="${uiLabelMap.PartyLastName}">
+        <text/>
+    </field>
+    <field name="birthDate"   title="${uiLabelMap.PartyBirthDate}">
+        <date-time type="date"/>
+    </field>
+    <field name="height"      title="${uiLabelMap.PartyHeight}">
+        <text/>
+    </field>
+    <field name="weight"      title="${uiLabelMap.PartyWeight}">
+        <text/>
+    </field>
+
+    <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+        <submit button-type="button"/>
+    </field>
+</form>
+
+        <form name="AddPartyGroup" type="single" target="createPartyGroupAndParty">
+            <auto-fields-service service-name="createParty"/>
+            <auto-fields-service service-name="createPartyGroup"/>
+
+            <field name="partyTypeId">
+                <hidden value="PARTY_GROUP"/>
+            </field>
+            <field name="statusId" title="${uiLabelMap.CommonStatus}">
+                <drop-down allow-empty="false" current-description="">
+                    <entity-options description="${description}"
+                                    key-field-name="partyStatusTypeId"
+                                    entity-name="PartyStatusType">
+                        <entity-order-by field-name="description"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="groupName"      title="${uiLabelMap.PartyGroupName}"><text/></field>
+            <field name="numEmployee"    title="${uiLabelMap.PartyNumEmployee}"><text/></field>
+            <field name="annualRevenue"  title="${uiLabelMap.PartyAnnualRevenue}"><text/></field>
+
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="AddPartyRole" type="single" target="createPartyRole">
+            <auto-fields-service service-name="createPartyRole"/>
+            <field name="partyId" title="${uiLabelMap.PartyPartyId}"><text/></field>
+            <field name="roleTypeId" title="${uiLabelMap.PartyRoleType}">
+                <drop-down allow-empty="false" current-description="">
+                    <entity-options description="${description}"
+                                    key-field-name="roleTypeId"
+                                    entity-name="RoleType">
+                        <entity-order-by field-name="description"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="fromPartyRelationship" title="${uiLabelMap.PartyFromRelationship}">
+                <drop-down allow-empty="false">
+                    <option key="Y" description="${uiLabelMap.CommonYes}"/>
+                    <option key="N" description="${uiLabelMap.CommonNo}"/>
+                </drop-down>
+            </field>
+            <field name="toPartyRelationship" title="${uiLabelMap.PartyToRelationship}">
+                <drop-down allow-empty="false">
+                    <option key="Y" description="${uiLabelMap.CommonYes}"/>
+                    <option key="N" description="${uiLabelMap.CommonNo}"/>
+                </drop-down>
+            </field>
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="AddPartyRelationship" type="single" target="createPartyRelationship">
+            <auto-fields-service service-name="createPartyRelationship"/>
+            <field name="partyIdFrom"     title="${uiLabelMap.PartyFromParty}"><text/></field>
+            <field name="partyIdTo"       title="${uiLabelMap.PartyToParty}"><text/></field>
+            <field name="roleTypeIdFrom"  title="${uiLabelMap.PartyFromRole}">
+                <drop-down allow-empty="false" current-description="">
+                    <entity-options description="${description}"
+                                    key-field-name="roleTypeId"
+                                    entity-name="RoleType">
+                        <entity-order-by field-name="description"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="roleTypeIdTo"    title="${uiLabelMap.PartyToRole}">
+                <drop-down allow-empty="false" current-description="">
+                    <entity-options description="${description}"
+                                    key-field-name="roleTypeId"
+                                    entity-name="RoleType">
+                        <entity-order-by field-name="description"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="fromDate"  title="${uiLabelMap.CommonFromDate}"><date-time/></field>
+            <field name="thruDate"  title="${uiLabelMap.CommonThruDate}"><date-time/></field>
+
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="AddPartyClassification" type="single" target="createPartyClassification">
+            <auto-fields-service service-name="createPartyClassification"/>
+            <field name="partyId"   title="${uiLabelMap.PartyPartyId}"><text/></field>
+            <field name="partyClassificationGroupId" title="${uiLabelMap.PartyClassificationGroup}">
+                <drop-down allow-empty="false" current-description="">
+                    <entity-options description="${description}"
+                                    key-field-name="partyClassificationGroupId"
+                                    entity-name="PartyClassificationGroup">
+                        <entity-order-by field-name="description"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="fromDate"  title="${uiLabelMap.CommonFromDate}"><date-time/></field>
+            <field name="thruDate"  title="${uiLabelMap.CommonThruDate}"><date-time/></field>
+
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="AddEmailContactMech" type="single" target="createEmailContactMech">
+            <field name="infoString" title="${uiLabelMap.PartyEmailAddress}">
+                <text size="50"/>
+            </field>
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="AddTelecomNumber" type="single" target="createTelecomNumberAndContactMech">
+            <field name="countryCode" title="${uiLabelMap.PartyCountryCode}">
+                <text size="5" maxlength="5"/>
+            </field>
+            <field name="areaCode" title="${uiLabelMap.PartyAreaCode}">
+                <text size="6" maxlength="10"/>
+            </field>
+            <field name="contactNumber" title="${uiLabelMap.PartyContactNumber}">
+                <text size="15" maxlength="20"/>
+            </field>
+            <field name="askForName" title="${uiLabelMap.PartyAskForName}">
+                <text size="30"/>
+            </field>
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="AddPostalAddress" type="single" target="createPostalAddressAndContactMech">
+            <field name="toName" title="${uiLabelMap.PartyToName}">
+                <text size="40"/>
+            </field>
+            <field name="attnName" title="${uiLabelMap.PartyAttentionName}">
+                <text size="40"/>
+            </field>
+            <field name="address1" title="${uiLabelMap.PartyAddressLine1}">
+                <text size="50"/>
+            </field>
+            <field name="address2" title="${uiLabelMap.PartyAddressLine2}">
+                <text size="50"/>
+            </field>
+            <field name="city" title="${uiLabelMap.PartyCity}">
+                <text size="30"/>
+            </field>
+            <field name="postalCode" title="${uiLabelMap.PartyPostalCode}">
+                <text size="10" maxlength="10"/>
+            </field>
+            <field name="stateProvinceGeoId" title="${uiLabelMap.PartyState}">
+                <text size="10"/>
+            </field>
+            <field name="countryGeoId" title="${uiLabelMap.PartyCountry}">
+                <text size="10"/>
+            </field>
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="AddPartyContactMech" type="single" target="createPartyContactMech">
+            <auto-fields-service service-name="createPartyContactMech"/>
+            <field name="partyId" title="${uiLabelMap.PartyPartyId}">
+                <text/>
+            </field>
+            <field name="contactMechId" title="${uiLabelMap.PartyContactMechId}">
+                <text/>
+            </field>
+            <field name="fromDate" title="${uiLabelMap.CommonFromDate}">
+                <date-time/>
+            </field>
+            <field name="thruDate" title="${uiLabelMap.CommonThruDate}">
+                <date-time/>
+            </field>
+            <field name="allowSolicitation" title="${uiLabelMap.PartyAllowSolicitation}">
+                <drop-down allow-empty="true">
+                    <option key="Y" description="${uiLabelMap.CommonYes}"/>
+                    <option key="N" description="${uiLabelMap.CommonNo}"/>
+                </drop-down>
+            </field>
+            <field name="verified" title="${uiLabelMap.CommonVerified}">
+                <drop-down allow-empty="true">
+                    <option key="Y" description="${uiLabelMap.CommonYes}"/>
+                    <option key="N" description="${uiLabelMap.CommonNo}"/>
+                </drop-down>
+            </field>
+            <field name="comments" title="${uiLabelMap.CommonComments}">
+                <textarea cols="40" rows="3"/>
+            </field>
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="AddPartyContactMechPurpose" type="single" target="createPartyContactMechPurpose">
+            <auto-fields-service service-name="createPartyContactMechPurpose"/>
+            <field name="partyId" title="${uiLabelMap.PartyPartyId}">
+                <text/>
+            </field>
+            <field name="contactMechId" title="${uiLabelMap.PartyContactMechId}">
+                <text/>
+            </field>
+            <field name="contactMechPurposeTypeId" title="${uiLabelMap.PartyPurposeType}">
+                <drop-down allow-empty="false" current-description="">
+                    <entity-options description="${description}"
+                                    key-field-name="contactMechPurposeTypeId"
+                                    entity-name="ContactMechPurposeType">
+                        <entity-order-by field-name="description"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="fromDate" title="${uiLabelMap.CommonFromDate}">
+                <date-time/>
+            </field>
+            <field name="thruDate" title="${uiLabelMap.CommonThruDate}">
+                <date-time/>
+            </field>
+            <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+                <submit button-type="button"/>
+            </field>
+        </form>
+
+        <form name="ListPartyContactMechs" type="list"
+              default-entity-name="PartyContactMech"
+              list-name="partyContactMechList"
+              odd-row-style="alternate-row"
+              default-table-style="basic-table hover-bar">
+
+            <field name="partyId"       title="${uiLabelMap.PartyPartyId}">      <display/></field>
+            <field name="contactMechId" title="${uiLabelMap.PartyContactMechId}"><display/></field>
+            <field name="fromDate"      title="${uiLabelMap.CommonFromDate}">    <display/></field>
+            <field name="thruDate"      title="${uiLabelMap.CommonThruDate}">    <display/></field>
+            <field name="allowSolicitation" title="${uiLabelMap.PartyAllowSolicitation}"><display/></field>
+            <field name="verified"      title="${uiLabelMap.CommonVerified}">    <display/></field>
+            <field name="comments"      title="${uiLabelMap.CommonComments}">    <display/></field>
+        </form>
+
+    </forms>

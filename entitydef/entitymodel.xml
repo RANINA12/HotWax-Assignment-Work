@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/entitymodel.xsd">
+
+    <title>Entity of Relationshipmgr Component</title>
+    <description>None</description>
+
+        <entity entity-name="PartyType" package-name="org.apache.Assignment.party.party" title="Party Type Entity">
+            <field name="partyTypeId" type="id">
+            </field>
+            <field name="parentTypeId" type="id">
+            </field>
+            <field name="hasTable" type="indicator">
+            </field>
+            <field name="description" type="description">
+            </field>
+            <prim-key field="partyTypeId"/>
+            <relation type="one" fk-name="PARTY_TYP_PAR" rel-entity-name="PartyType">
+                <key-map field-name="parentTypeId" rel-field-name="partyTypeId"/>
+            </relation>
+        </entity>
+
+        <entity entity-name="PartyStatusType" package-name="org.apache.Assignment.party.party" title="Party Status Type">
+            <field name="partyStatusTypeId" type="id">
+            </field>
+            <field name="description" type="description">
+            </field>
+            <field name="hasTable" type="indicator">
+            </field>
+            <prim-key field="partyStatusTypeId"/>
+        </entity>
+
+        <entity entity-name="Party" package-name="org.apache.Assignment.party.party" title="Party Entity">
+            <field name="partyId" type="id">
+            </field>
+            <field name="partyTypeId" type="id">
+            </field>
+            <field name="statusId" type="id">
+            </field>
+            <field name="description" type="description">
+            </field>
+            <prim-key field="partyId"/>
+            <relation type="one" fk-name="PARTY_PTY_TYP" rel-entity-name="PartyType">
+                <key-map field-name="partyTypeId"/>
+            </relation>
+            <relation type="one" fk-name="PARTY_STAT_TYP" rel-entity-name="PartyStatusType">
+                <key-map field-name="statusId" rel-field-name="partyStatusTypeId"/>
+            </relation>
+        </entity>
+
+
+    <entity entity-name="Person" package-name="org.apache.ofbiz.party.party" title="Person Entity">
+        <field name="partyId" type="id">
+        </field>
+        <field name="salutation" type="name">
+        </field>
+        <field name="firstName" type="name">
+        </field>
+        <field name="middleName" type="name">
+        </field> <!-- ADDED: Required by PartyNameView -->
+        <field name="lastName" type="name">
+        </field>
+        <field name="personalTitle" type="name">
+        </field>
+        <field name="suffix" type="name">
+        </field>
+        <field name="height" type="floating-point">
+        </field>
+        <field name="weight" type="floating-point">
+        </field>
+        <field name="birthDate" type="date">
+        </field>
+        <prim-key field="partyId"/>
+        <relation type="one" fk-name="PERSON_PARTY" rel-entity-name="Party">
+            <key-map field-name="partyId"/>
+        </relation>
+    </entity>
+
+        <entity entity-name="PartyClassificationType" package-name="org.apache.Assignment.party.classification" title="Party Classification Type">
+            <field name="partyClassificationTypeId" type="id">
+            </field>
+            <field name="parentTypeId" type="id">
+            </field>
+            <field name="hasTable" type="indicator">
+            </field>
+            <field name="description" type="description">
+            </field>
+            <prim-key field="partyClassificationTypeId"/>
+        </entity>
+
+        <entity entity-name="PartyClassificationGroup" package-name="org.apache.Assignment.party.classification" title="Party Classification Group">
+            <field name="partyClassificationGroupId" type="id">
+            </field>
+            <field name="partyClassificationTypeId" type="id">
+            </field>
+            <field name="parentGroupId" type="id">
+            </field>
+            <field name="description" type="description">
+            </field>
+            <prim-key field="partyClassificationGroupId"/>
+            <relation type="one" fk-name="PTY_CLASS_GRP_TYP" rel-entity-name="PartyClassificationType">
+                <key-map field-name="partyClassificationTypeId"/>
+            </relation>
+        </entity>
+
+        <entity entity-name="PartyClassification" package-name="org.apache.Assignment.party.classification" title="Party Classification">
+            <field name="partyId" type="id">
+
+            </field>
+            <field name="partyClassificationGroupId" type="id">
+            </field>
+            <field name="fromDate" type="date-time">
+            </field>
+            <field name="thruDate" type="date-time">
+            </field>
+            <prim-key field="partyId"/>
+            <prim-key field="partyClassificationGroupId"/>
+            <prim-key field="fromDate"/>
+            <relation type="one" fk-name="PTY_CLASS_PTY" rel-entity-name="Party">
+                <key-map field-name="partyId"/>
+            </relation>
+            <relation type="one" fk-name="PTY_CLASS_GRP" rel-entity-name="PartyClassificationGroup">
+                <key-map field-name="partyClassificationGroupId"/>
+            </relation>
+        </entity>
+
+        <entity entity-name="RoleType" package-name="org.apache.Assignment.party.role" title="Role Type Entity">
+            <field name="roleTypeId" type="id">
+            </field>
+            <field name="parentTypeId" type="id">
+            </field>
+            <field name="hasTable" type="indicator">
+            </field>
+            <field name="description" type="description">
+            </field>
+            <prim-key field="roleTypeId"/>
+        </entity>
+
+        <entity entity-name="PartyRole" package-name="org.apache.Assignment.party.role" title="Party Role Entity">
+            <field name="partyId" type="id">
+            </field>
+            <field name="roleTypeId" type="id">
+            </field>
+            <field name="fromPartyRelationship" type="indicator">
+            </field>
+            <field name="toPartyRelationship" type="indicator">
+            </field>
+            <prim-key field="partyId"/>
+            <prim-key field="roleTypeId"/>
+            <relation type="one" fk-name="PARTY_ROLE_PTY" rel-entity-name="Party">
+                <key-map field-name="partyId"/>
+            </relation>
+            <relation type="one" fk-name="PARTY_ROLE_TYP" rel-entity-name="RoleType">
+                <key-map field-name="roleTypeId"/>
+            </relation>
+        </entity>
+
+        <entity entity-name="PartyRelationshipType" package-name="org.apache.Assignment.party.party" title="Party Relationship Type">
+            <field name="partyRelationshipTypeId" type="id">
+            </field>
+            <field name="parentTypeId" type="id">
+            </field>
+            <field name="hasTable" type="indicator">
+            </field>
+            <field name="partyRelationshipName" type="name">
+            </field>
+            <field name="description" type="description">
+            </field>
+            <field name="roleTypeIdValidFrom" type="id">
+            </field>
+            <field name="roleTypeIdValidTo" type="id">
+            </field>
+            <prim-key field="partyRelationshipTypeId"/>
+        </entity>
+
+        <entity entity-name="PartyRelationship" package-name="org.apache.Assignment.party.party" title="Party Relationship">
+            <field name="partyIdFrom" type="id">
+            </field>
+            <field name="partyIdTo" type="id">
+            </field>
+            <field name="roleTypeIdFrom" type="id">
+            </field>
+            <field name="roleTypeIdTo" type="id">
+            </field>
+            <field name="fromDate" type="date-time">
+            </field>
+            <field name="thruDate" type="date-time">
+            </field>
+            <prim-key field="partyIdFrom"/>
+            <prim-key field="partyIdTo"/>
+            <prim-key field="roleTypeIdFrom"/>
+            <prim-key field="roleTypeIdTo"/>
+            <prim-key field="fromDate"/>
+            <relation type="one" fk-name="PTY_REL_PTY_FROM" rel-entity-name="Party">
+                <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+            </relation>
+            <relation type="one" fk-name="PTY_REL_PTY_TO" rel-entity-name="Party">
+                <key-map field-name="partyIdTo" rel-field-name="partyId"/>
+            </relation>
+            <relation type="one" fk-name="PTY_REL_ROLE_FROM" rel-entity-name="RoleType">
+                <key-map field-name="roleTypeIdFrom" rel-field-name="roleTypeId"/>
+            </relation>
+            <relation type="one" fk-name="PTY_REL_ROLE_TO" rel-entity-name="RoleType">
+                <key-map field-name="roleTypeIdTo" rel-field-name="roleTypeId"/>
+            </relation>
+        </entity>
+
+        <entity entity-name="PartyGroup" package-name="org.apache.Assignment.party.party" title="Party Group Entity">
+            <field name="partyId" type="id">
+            </field>
+            <field name="groupName" type="name">
+            </field>
+            <field name="numEmployee" type="numeric">
+            </field>
+            <field name="annualRevenue" type="currency-amount">
+            </field>
+            <prim-key field="partyId"/>
+            <relation type="one" fk-name="PTY_GRP_PARTY" rel-entity-name="Party">
+                <key-map field-name="partyId"/>
+            </relation>
+        </entity>
+</entitymodel>
+
+
+
+
+
+

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+    <PartyType partyTypeId="PERSON"      description="Person"      hasTable="Y"/>
+    <PartyType partyTypeId="PARTY_GROUP" description="Party Group" hasTable="Y"/>
+
+    <PartyStatusType partyStatusTypeId="PARTY_ENABLED"    description="Active"    hasTable="N"/>
+    <PartyStatusType partyStatusTypeId="PARTY_DISABLED"  description="Inactive"  hasTable="N"/>
+    <PartyStatusType partyStatusTypeId="SUSPENDED" description="Suspended" hasTable="N"/>
+
+    <PartyClassificationType partyClassificationTypeId="SIZE"            description="Size"                   hasTable="N"/>
+    <PartyClassificationType partyClassificationTypeId="PERSON_CLASS"    description="Person Classification"  hasTable="N"/>
+    <PartyClassificationType partyClassificationTypeId="ANNUAL_REVENUE"  description="Annual Revenue"         hasTable="N"/>
+    <PartyClassificationType partyClassificationTypeId="VALUE_RATING"    description="Value Rating"           hasTable="N"/>
+    <PartyClassificationType partyClassificationTypeId="ORG_TYPE"        description="Organisation Type"      hasTable="N"/>
+
+    <RoleType roleTypeId="TEACHER"      description="Teacher"           hasTable="N"/>
+    <RoleType roleTypeId="STUDENT"      description="Student"           hasTable="N"/>
+    <RoleType roleTypeId="ADMIN"        description="Admin"             hasTable="N"/>
+    <RoleType roleTypeId="OWNER"        description="Owner"             hasTable="N"/>
+    <RoleType roleTypeId="MANAGER"      description="Manager"           hasTable="N"/>
+    <RoleType roleTypeId="PRINCIPAL"    description="Principal"         hasTable="N"/>
+    <RoleType roleTypeId="SUPPORT"      description="Support Staff"     hasTable="N"/>
+    <RoleType roleTypeId="CLASS_TEACHER" description="Class Teacher"    hasTable="N"/>
+
+    <PartyRelationshipType partyRelationshipTypeId="EDUCATOR"         partyRelationshipName="Educator"          hasTable="N" roleTypeIdValidFrom="TEACHER"       roleTypeIdValidTo="STUDENT"/>
+    <PartyRelationshipType partyRelationshipTypeId="TEACHER_STUDENT"  partyRelationshipName="Teacher-Student"   hasTable="N" roleTypeIdValidFrom="TEACHER"       roleTypeIdValidTo="STUDENT"/>
+    <PartyRelationshipType partyRelationshipTypeId="COLLEAGUE"        partyRelationshipName="Colleague"         hasTable="N" roleTypeIdValidFrom="TEACHER"       roleTypeIdValidTo="TEACHER"/>
+    <PartyRelationshipType partyRelationshipTypeId="MANAGER_REL"      partyRelationshipName="Manager"           hasTable="N" roleTypeIdValidFrom="PRINCIPAL"     roleTypeIdValidTo="TEACHER"/>
+    <PartyRelationshipType partyRelationshipTypeId="FRIEND"           partyRelationshipName="Friend"            hasTable="N" roleTypeIdValidFrom="STUDENT"       roleTypeIdValidTo="STUDENT"/>
+    <PartyRelationshipType partyRelationshipTypeId="EMPLOYED_BY"      partyRelationshipName="Employed By"       hasTable="N" roleTypeIdValidFrom="TEACHER"       roleTypeIdValidTo="OWNER"/>
+    <PartyRelationshipType partyRelationshipTypeId="ENROLLED_IN"      partyRelationshipName="Enrolled In"       hasTable="N" roleTypeIdValidFrom="STUDENT"       roleTypeIdValidTo="OWNER"/>
+    <PartyRelationshipType partyRelationshipTypeId="CLASS_TEACHER_OF" partyRelationshipName="Class Teacher Of"  hasTable="N" roleTypeIdValidFrom="CLASS_TEACHER" roleTypeIdValidTo="STUDENT"/>
+
+    <ContactMechPurposeType contactMechPurposeTypeId="PRIMARY_EMAIL"    description="Primary Email"           hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="PERSONAL_EMAIL"   description="Personal Email"          hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="SCHOOL_EMAIL"     description="School / Work Email"     hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="PRIMARY_PHONE"    description="Primary Phone"           hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="MOBILE_PHONE"     description="Mobile Phone"            hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="FAX_NUMBER"       description="Fax Number"              hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="PRIMARY_LOCATION" description="Primary Location"        hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="HOME_LOCATION"    description="Home / Mailing Address"  hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="SCHOOL_LOCATION"  description="School Address"          hasTable="N"/>
+    <ContactMechPurposeType contactMechPurposeTypeId="SCHOOL_WEBSITE"   description="School Website"          hasTable="N"/>
+
+    <Geo geoId="IND"
+         geoTypeId="COUNTRY"
+         geoName="India"
+         geoCode="IN"
+         geoSecCode="IND"
+         abbreviation="IN"/>
+
+    <!-- States of India (add only what you need) -->
+    <Geo geoId="IN-CG"
+         geoTypeId="STATE"
+         geoName="Chhattisgarh"
+         geoCode="CG"
+         abbreviation="CG"/>
+
+    <Geo geoId="IN-MH"
+         geoTypeId="STATE"
+         geoName="Maharashtra"
+         geoCode="MH"
+         abbreviation="MH"/>
+
+    <Geo geoId="IN-DL"
+         geoTypeId="STATE"
+         geoName="Delhi"
+         geoCode="DL"
+         abbreviation="DL"/>
+
+    <Geo geoId="IN-UP"
+         geoTypeId="STATE"
+         geoName="Uttar Pradesh"
+         geoCode="UP"
+         abbreviation="UP"/>
+
+    <Geo geoId="IN-MP"
+         geoTypeId="STATE"
+         geoName="Madhya Pradesh"
+         geoCode="MP"
+         abbreviation="MP"/>
+
+    <!-- City: Raipur -->
+    <Geo geoId="IN-CG-RPR"
+         geoTypeId="CITY"
+         geoName="Raipur"
+         geoCode="RPR"
+         abbreviation="RPR"/>
+
+    <!-- Postal Code -->
+    <Geo geoId="PC-492001"
+         geoTypeId="POSTAL_CODE"
+         geoName="492001"
+         geoCode="492001"/>
+</entity-engine-xml>

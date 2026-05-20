@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+
+    <Party      partyId="1000" partyTypeId="PARTY_GROUP" statusId="PARTY_ENABLED"/>
+    <PartyGroup partyId="1000" groupName="St. Joseph Sr Secondary School" numEmployee="120" annualRevenue="5000000.00"/>
+
+
+    <Party  partyId="1001" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1001" salutation="Dr."  firstName="Rajendra" lastName="Kulkarni" birthDate="1968-01-20" height="170.0" weight="78.0"/>
+
+    <Party  partyId="1002" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1002" salutation="Mr."  firstName="Sample"  lastName="Teacher" birthDate="1985-06-15" height="175.0" weight="70.0"/>
+
+    <Party  partyId="1003" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1003" salutation="Mr."  firstName="Ramesh"  lastName="Sharma"  birthDate="1978-03-22" height="172.0" weight="75.0"/>
+
+    <Party  partyId="1004" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1004" salutation="Ms."  firstName="Priya"   lastName="Verma"   birthDate="1982-09-10" height="160.0" weight="58.0"/>
+
+    <Party  partyId="1005" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1005" salutation="Mr."  firstName="Ankit"   lastName="Mishra"  birthDate="1990-01-05" height="178.0" weight="72.0"/>
+
+    <Party  partyId="1006" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1006" salutation="Mrs." firstName="Sunita"  lastName="Singh"   birthDate="1980-11-30" height="158.0" weight="62.0"/>
+
+    <Party  partyId="1007" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1007" salutation="Mr."  firstName="Vijay"   lastName="Patel"   birthDate="1975-07-18" height="168.0" weight="80.0"/>
+
+    <Party  partyId="1008" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1008" salutation="Mr."  firstName="Sample"  lastName="Student" birthDate="2008-04-12"/>
+
+    <Party  partyId="1009" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1009" salutation="Mr."  firstName="Aarav"   lastName="Gupta"   birthDate="2008-02-14"/>
+
+    <Party  partyId="1010" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1010" salutation="Ms."  firstName="Diya"    lastName="Joshi"   birthDate="2008-07-22"/>
+
+    <Party  partyId="1011" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1011" salutation="Mr."  firstName="Rohan"   lastName="Tiwari"  birthDate="2008-11-05"/>
+
+    <Party  partyId="1012" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1012" salutation="Ms."  firstName="Neha"    lastName="Yadav"   birthDate="2008-03-19"/>
+
+    <Party  partyId="1013" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1013" salutation="Mr."  firstName="Arjun"   lastName="Dubey"   birthDate="2008-09-28"/>
+
+    <Party  partyId="1014" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1014" salutation="Ms."  firstName="Kavya"   lastName="Pandey"  birthDate="2009-01-07"/>
+
+    <Party  partyId="1015" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1015" salutation="Mr."  firstName="Manav"   lastName="Soni"    birthDate="2008-06-30"/>
+
+    <Party  partyId="1016" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1016" salutation="Ms."  firstName="Ritika"  lastName="Agarwal" birthDate="2008-12-15"/>
+
+    <Party  partyId="1017" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1017" salutation="Mr."  firstName="Harsh"   lastName="Saxena"  birthDate="2009-05-03"/>
+
+    <Party  partyId="1018" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1018" salutation="Mr."  firstName="Mohan"   lastName="Lal"     birthDate="1988-08-25"/>
+
+    <Party  partyId="1019" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="1019" salutation="Mrs." firstName="Geeta"   lastName="Rao"     birthDate="1992-04-11"/>
+
+    <PartyClassificationGroup partyClassificationGroupId="CLASS_X_A"     partyClassificationTypeId="PERSON_CLASS" description="Class X 'A'"/>
+    <PartyClassificationGroup partyClassificationGroupId="CLASS_X_B"     partyClassificationTypeId="PERSON_CLASS" description="Class X 'B'"/>
+    <PartyClassificationGroup partyClassificationGroupId="CLASS_X_C"     partyClassificationTypeId="PERSON_CLASS" description="Class X 'C'"/>
+    <PartyClassificationGroup partyClassificationGroupId="CLASS_TEACHER" partyClassificationTypeId="PERSON_CLASS" description="Teacher"/>
+    <PartyClassificationGroup partyClassificationGroupId="SUPPORT_STAFF" partyClassificationTypeId="PERSON_CLASS" description="Support Staff"/>
+    <PartyClassificationGroup partyClassificationGroupId="ADMIN_STAFF"   partyClassificationTypeId="PERSON_CLASS" description="Administrative Staff"/>
+
+    <PartyClassification partyId="1002" partyClassificationGroupId="CLASS_TEACHER" fromDate="2020-06-01 00:00:00.000"/>
+    <PartyClassification partyId="1003" partyClassificationGroupId="CLASS_TEACHER" fromDate="2015-06-01 00:00:00.000"/>
+    <PartyClassification partyId="1004" partyClassificationGroupId="CLASS_TEACHER" fromDate="2017-06-01 00:00:00.000"/>
+    <PartyClassification partyId="1005" partyClassificationGroupId="CLASS_TEACHER" fromDate="2019-06-01 00:00:00.000"/>
+    <PartyClassification partyId="1006" partyClassificationGroupId="CLASS_TEACHER" fromDate="2016-06-01 00:00:00.000"/>
+    <PartyClassification partyId="1007" partyClassificationGroupId="CLASS_TEACHER" fromDate="2010-06-01 00:00:00.000"/>
+
+    <PartyClassification partyId="1008" partyClassificationGroupId="CLASS_X_A" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyClassification partyId="1009" partyClassificationGroupId="CLASS_X_A" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyClassification partyId="1010" partyClassificationGroupId="CLASS_X_A" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyClassification partyId="1011" partyClassificationGroupId="CLASS_X_A" fromDate="2023-04-01 00:00:00.000"/>
+
+    <PartyClassification partyId="1012" partyClassificationGroupId="CLASS_X_B" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyClassification partyId="1013" partyClassificationGroupId="CLASS_X_B" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyClassification partyId="1014" partyClassificationGroupId="CLASS_X_B" fromDate="2023-04-01 00:00:00.000"/>
+
+    <PartyClassification partyId="1015" partyClassificationGroupId="CLASS_X_C" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyClassification partyId="1016" partyClassificationGroupId="CLASS_X_C" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyClassification partyId="1017" partyClassificationGroupId="CLASS_X_C" fromDate="2023-04-01 00:00:00.000" thruDate="2024-03-31 00:00:00.000"/>
+
+    <PartyClassification partyId="1018" partyClassificationGroupId="SUPPORT_STAFF" fromDate="2021-01-01 00:00:00.000"/>
+    <PartyClassification partyId="1019" partyClassificationGroupId="SUPPORT_STAFF" fromDate="2022-03-01 00:00:00.000"/>
+    <PartyClassification partyId="1001" partyClassificationGroupId="ADMIN_STAFF"   fromDate="2005-06-01 00:00:00.000"/>
+
+    <PartyRole partyId="1002" roleTypeId="TEACHER"/>
+    <PartyRole partyId="1003" roleTypeId="TEACHER"/>
+    <PartyRole partyId="1004" roleTypeId="TEACHER"/>
+    <PartyRole partyId="1005" roleTypeId="TEACHER"/>
+    <PartyRole partyId="1006" roleTypeId="TEACHER"/>
+    <PartyRole partyId="1007" roleTypeId="TEACHER"/>
+
+    <PartyRole partyId="1003" roleTypeId="CLASS_TEACHER"/>
+    <PartyRole partyId="1004" roleTypeId="CLASS_TEACHER"/>
+    <PartyRole partyId="1005" roleTypeId="CLASS_TEACHER"/>
+
+    <PartyRole partyId="1008" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1009" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1010" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1011" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1012" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1013" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1014" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1015" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1016" roleTypeId="STUDENT"/>
+    <PartyRole partyId="1017" roleTypeId="STUDENT"/>
+
+    <PartyRole partyId="1001" roleTypeId="PRINCIPAL"/>
+    <PartyRole partyId="1001" roleTypeId="ADMIN"/>
+    <PartyRole partyId="1018" roleTypeId="SUPPORT"/>
+    <PartyRole partyId="1019" roleTypeId="SUPPORT"/>
+
+    <PartyRole partyId="1000" roleTypeId="OWNER"/>
+
+    <PartyRelationship partyIdFrom="1001" partyIdTo="1002" roleTypeIdFrom="PRINCIPAL" roleTypeIdTo="TEACHER" fromDate="2020-06-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1001" partyIdTo="1003" roleTypeIdFrom="PRINCIPAL" roleTypeIdTo="TEACHER" fromDate="2015-06-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1001" partyIdTo="1004" roleTypeIdFrom="PRINCIPAL" roleTypeIdTo="TEACHER" fromDate="2017-06-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1001" partyIdTo="1005" roleTypeIdFrom="PRINCIPAL" roleTypeIdTo="TEACHER" fromDate="2019-06-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1001" partyIdTo="1006" roleTypeIdFrom="PRINCIPAL" roleTypeIdTo="TEACHER" fromDate="2016-06-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1001" partyIdTo="1007" roleTypeIdFrom="PRINCIPAL" roleTypeIdTo="TEACHER" fromDate="2010-06-01 00:00:00.000"/>
+
+    <PartyRelationship partyIdFrom="1003" partyIdTo="1008" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1003" partyIdTo="1009" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1003" partyIdTo="1010" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1003" partyIdTo="1011" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+
+    <PartyRelationship partyIdFrom="1004" partyIdTo="1012" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1004" partyIdTo="1013" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1004" partyIdTo="1014" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+
+    <PartyRelationship partyIdFrom="1005" partyIdTo="1015" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1005" partyIdTo="1016" roleTypeIdFrom="TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+
+    <PartyRelationship partyIdFrom="1003" partyIdTo="1009" roleTypeIdFrom="CLASS_TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1004" partyIdTo="1012" roleTypeIdFrom="CLASS_TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1005" partyIdTo="1015" roleTypeIdFrom="CLASS_TEACHER" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+
+    <PartyRelationship partyIdFrom="1003" partyIdTo="1004" roleTypeIdFrom="TEACHER" roleTypeIdTo="TEACHER" fromDate="2017-06-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1003" partyIdTo="1002" roleTypeIdFrom="TEACHER" roleTypeIdTo="TEACHER" fromDate="2020-06-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1004" partyIdTo="1006" roleTypeIdFrom="TEACHER" roleTypeIdTo="TEACHER" fromDate="2017-06-01 00:00:00.000"/>
+
+    <PartyRelationship partyIdFrom="1009" partyIdTo="1010" roleTypeIdFrom="STUDENT" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1009" partyIdTo="1011" roleTypeIdFrom="STUDENT" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1012" partyIdTo="1014" roleTypeIdFrom="STUDENT" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+    <PartyRelationship partyIdFrom="1015" partyIdTo="1016" roleTypeIdFrom="STUDENT" roleTypeIdTo="STUDENT" fromDate="2023-04-01 00:00:00.000"/>
+
+        <ContactMechTypePurpose contactMechTypeId="EMAIL_ADDRESS"  contactMechPurposeTypeId="PRIMARY_EMAIL"/>
+        <ContactMechTypePurpose contactMechTypeId="EMAIL_ADDRESS"  contactMechPurposeTypeId="PERSONAL_EMAIL"/>
+        <ContactMechTypePurpose contactMechTypeId="EMAIL_ADDRESS"  contactMechPurposeTypeId="SCHOOL_EMAIL"/>
+        <ContactMechTypePurpose contactMechTypeId="TELECOM_NUMBER" contactMechPurposeTypeId="PRIMARY_PHONE"/>
+        <ContactMechTypePurpose contactMechTypeId="TELECOM_NUMBER" contactMechPurposeTypeId="MOBILE_PHONE"/>
+        <ContactMechTypePurpose contactMechTypeId="TELECOM_NUMBER" contactMechPurposeTypeId="FAX_NUMBER"/>
+        <ContactMechTypePurpose contactMechTypeId="POSTAL_ADDRESS" contactMechPurposeTypeId="PRIMARY_LOCATION"/>
+        <ContactMechTypePurpose contactMechTypeId="POSTAL_ADDRESS" contactMechPurposeTypeId="HOME_LOCATION"/>
+        <ContactMechTypePurpose contactMechTypeId="POSTAL_ADDRESS" contactMechPurposeTypeId="SCHOOL_LOCATION"/>
+        <ContactMechTypePurpose contactMechTypeId="WEB_ADDRESS"    contactMechPurposeTypeId="SCHOOL_WEBSITE"/>
+
+        <ContactMech contactMechId="2000" contactMechTypeId="POSTAL_ADDRESS"/>
+        <ContactMech contactMechId="2001" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2002" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2003" contactMechTypeId="EMAIL_ADDRESS"  infoString="info@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2004" contactMechTypeId="WEB_ADDRESS"    infoString="https://www.stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2005" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2006" contactMechTypeId="EMAIL_ADDRESS"  infoString="principal@stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2007" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2008" contactMechTypeId="EMAIL_ADDRESS"  infoString="sample.teacher@stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2009" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2010" contactMechTypeId="EMAIL_ADDRESS"  infoString="ramesh.sharma@stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2011" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2012" contactMechTypeId="EMAIL_ADDRESS"  infoString="priya.verma@stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2013" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2014" contactMechTypeId="EMAIL_ADDRESS"  infoString="ankit.mishra@stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2015" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2016" contactMechTypeId="EMAIL_ADDRESS"  infoString="sunita.singh@stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2017" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2018" contactMechTypeId="EMAIL_ADDRESS"  infoString="vijay.patel@stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2019" contactMechTypeId="EMAIL_ADDRESS"  infoString="sample.student@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2020" contactMechTypeId="EMAIL_ADDRESS"  infoString="aarav.gupta@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2021" contactMechTypeId="EMAIL_ADDRESS"  infoString="diya.joshi@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2022" contactMechTypeId="EMAIL_ADDRESS"  infoString="rohan.tiwari@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2023" contactMechTypeId="EMAIL_ADDRESS"  infoString="neha.yadav@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2024" contactMechTypeId="EMAIL_ADDRESS"  infoString="arjun.dubey@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2025" contactMechTypeId="EMAIL_ADDRESS"  infoString="kavya.pandey@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2026" contactMechTypeId="EMAIL_ADDRESS"  infoString="manav.soni@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2027" contactMechTypeId="EMAIL_ADDRESS"  infoString="ritika.agarwal@stjoseph.edu.in"/>
+        <ContactMech contactMechId="2028" contactMechTypeId="EMAIL_ADDRESS"  infoString="harsh.saxena@stjoseph.edu.in"/>
+
+        <ContactMech contactMechId="2029" contactMechTypeId="TELECOM_NUMBER"/>
+        <ContactMech contactMechId="2030" contactMechTypeId="TELECOM_NUMBER"/>
+
+    <PostalAddress contactMechId="2000"
+                   toName="St. Joseph Sr Secondary School"
+                   address1="Civil Lines, Near District Court"
+                   address2="Sadar Bazar"
+                   city="Raipur"
+                   cityGeoId="IN-CG-RPR"
+                   postalCode="492001"
+                   postalCodeGeoId="PC-492001"
+                   stateProvinceGeoId="IN-CG"
+                   countryGeoId="IND"/>
+
+        <TelecomNumber contactMechId="2001" countryCode="91" areaCode="0771" contactNumber="2234567" askForName="Reception"/>
+        <TelecomNumber contactMechId="2002" countryCode="91" areaCode="0771" contactNumber="2234568" askForName="Office Fax"/>
+
+
+        <TelecomNumber contactMechId="2005" countryCode="91" areaCode="" contactNumber="9876500001" askForName="Dr. Rajendra Kulkarni"/>
+
+        <!-- Teachers -->
+        <TelecomNumber contactMechId="2007" countryCode="91" areaCode="" contactNumber="9876500002"/>
+        <TelecomNumber contactMechId="2009" countryCode="91" areaCode="" contactNumber="9876500003" askForName="Ramesh Sharma"/>
+        <TelecomNumber contactMechId="2011" countryCode="91" areaCode="" contactNumber="9876500004" askForName="Priya Verma"/>
+        <TelecomNumber contactMechId="2013" countryCode="91" areaCode="" contactNumber="9876500005" askForName="Ankit Mishra"/>
+        <TelecomNumber contactMechId="2015" countryCode="91" areaCode="" contactNumber="9876500006" askForName="Sunita Singh"/>
+        <TelecomNumber contactMechId="2017" countryCode="91" areaCode="" contactNumber="9876500007" askForName="Vijay Patel"/>
+
+        <TelecomNumber contactMechId="2029" countryCode="91" areaCode="" contactNumber="9876500018" askForName="Mohan Lal"/>
+        <TelecomNumber contactMechId="2030" countryCode="91" areaCode="" contactNumber="9876500019" askForName="Geeta Rao"/>
+
+        <PartyContactMech partyId="1000" contactMechId="2000" fromDate="2000-01-01 00:00:00.000" allowSolicitation="Y" verified="Y"/>
+        <PartyContactMech partyId="1000" contactMechId="2001" fromDate="2000-01-01 00:00:00.000" allowSolicitation="Y" verified="Y"/>
+        <PartyContactMech partyId="1000" contactMechId="2002" fromDate="2000-01-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1000" contactMechId="2003" fromDate="2000-01-01 00:00:00.000" allowSolicitation="Y" verified="Y"/>
+        <PartyContactMech partyId="1000" contactMechId="2004" fromDate="2000-01-01 00:00:00.000" allowSolicitation="Y" verified="Y"/>
+
+        <PartyContactMech partyId="1001" contactMechId="2005" fromDate="2005-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1001" contactMechId="2006" fromDate="2005-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <PartyContactMech partyId="1002" contactMechId="2007" fromDate="2020-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1002" contactMechId="2008" fromDate="2020-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <PartyContactMech partyId="1003" contactMechId="2009" fromDate="2015-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1003" contactMechId="2010" fromDate="2015-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <!-- Priya (partyId=1004) -->
+        <PartyContactMech partyId="1004" contactMechId="2011" fromDate="2017-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1004" contactMechId="2012" fromDate="2017-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <!-- Ankit (partyId=1005) -->
+        <PartyContactMech partyId="1005" contactMechId="2013" fromDate="2019-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1005" contactMechId="2014" fromDate="2019-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <!-- Sunita (partyId=1006) -->
+        <PartyContactMech partyId="1006" contactMechId="2015" fromDate="2016-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1006" contactMechId="2016" fromDate="2016-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <!-- Vijay (partyId=1007) -->
+        <PartyContactMech partyId="1007" contactMechId="2017" fromDate="2010-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1007" contactMechId="2018" fromDate="2010-06-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <!-- Students (email only) -->
+        <PartyContactMech partyId="1008" contactMechId="2019" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1009" contactMechId="2020" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1010" contactMechId="2021" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1011" contactMechId="2022" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1012" contactMechId="2023" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1013" contactMechId="2024" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1014" contactMechId="2025" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1015" contactMechId="2026" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1016" contactMechId="2027" fromDate="2023-04-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <PartyContactMech partyId="1017" contactMechId="2028" fromDate="2023-04-01 00:00:00.000"
+                          thruDate="2024-03-31 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <PartyContactMech partyId="1018" contactMechId="2029" fromDate="2021-01-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+        <PartyContactMech partyId="1019" contactMechId="2030" fromDate="2022-03-01 00:00:00.000" allowSolicitation="N" verified="Y"/>
+
+        <PartyContactMechPurpose partyId="1000" contactMechId="2000" contactMechPurposeTypeId="SCHOOL_LOCATION"  fromDate="2000-01-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1000" contactMechId="2001" contactMechPurposeTypeId="PRIMARY_PHONE"    fromDate="2000-01-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1000" contactMechId="2002" contactMechPurposeTypeId="FAX_NUMBER"       fromDate="2000-01-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1000" contactMechId="2003" contactMechPurposeTypeId="PRIMARY_EMAIL"    fromDate="2000-01-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1000" contactMechId="2004" contactMechPurposeTypeId="SCHOOL_WEBSITE"   fromDate="2000-01-01 00:00:00.000"/>
+
+        <PartyContactMechPurpose partyId="1001" contactMechId="2005" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2005-06-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1001" contactMechId="2006" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2005-06-01 00:00:00.000"/>
+
+        <PartyContactMechPurpose partyId="1002" contactMechId="2007" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2020-06-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1002" contactMechId="2008" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2020-06-01 00:00:00.000"/>
+
+        <PartyContactMechPurpose partyId="1003" contactMechId="2009" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2015-06-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1003" contactMechId="2010" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2015-06-01 00:00:00.000"/>
+
+        <PartyContactMechPurpose partyId="1004" contactMechId="2011" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2017-06-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1004" contactMechId="2012" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2017-06-01 00:00:00.000"/>
+
+        <PartyContactMechPurpose partyId="1005" contactMechId="2013" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2019-06-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1005" contactMechId="2014" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2019-06-01 00:00:00.000"/>
+
+        <PartyContactMechPurpose partyId="1006" contactMechId="2015" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2016-06-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1006" contactMechId="2016" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2016-06-01 00:00:00.000"/>
+
+        <PartyContactMechPurpose partyId="1007" contactMechId="2017" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2010-06-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1007" contactMechId="2018" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2010-06-01 00:00:00.000"/>
+
+        <PartyContactMechPurpose partyId="1008" contactMechId="2019" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1009" contactMechId="2020" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1010" contactMechId="2021" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1011" contactMechId="2022" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1012" contactMechId="2023" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1013" contactMechId="2024" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1014" contactMechId="2025" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1015" contactMechId="2026" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1016" contactMechId="2027" contactMechPurposeTypeId="SCHOOL_EMAIL"     fromDate="2023-04-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1017" contactMechId="2028" contactMechPurposeTypeId="SCHOOL_EMAIL"
+                                 fromDate="2023-04-01 00:00:00.000" thruDate="2024-03-31 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1018" contactMechId="2029" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2021-01-01 00:00:00.000"/>
+        <PartyContactMechPurpose partyId="1019" contactMechId="2030" contactMechPurposeTypeId="MOBILE_PHONE"     fromDate="2022-03-01 00:00:00.000"/>
+
+    </entity-engine-xml>
