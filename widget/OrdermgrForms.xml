@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://ofbiz.apache.org/Widget-Form" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Form http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+
+        <form name="CreateOrderHeaderForm" type="single" target="createOrderHeader" default-map-name="OrderHeaderNick">
+            <field name="orderId" tooltip="Leave Empty to auto-generate" title="Order ID">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="internalId" title="Internal ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="orderName" title="Order Name" required-field="false">
+                <text size="40" maxlength="40"/>
+            </field>
+            <field name="orderTypeId" title="Order Type" required-field="true">
+                <drop-down allow-empty="false">
+                    <entity-options entity-name="OrderTypeNick" description="${description}" key-field-name="orderTypeId">
+                        <entity-order-by field-name="description"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="statusId" title="Status ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="originFacilityId" title="Origin Facility ID" required-field="false">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="entryDate" title="Entry Date" required-field="false">
+                <date-time type="date"/>
+            </field>
+            <field name="orderDate" title="Order Date" required-field="false">
+                <date-time type="date"/>
+            </field>
+            <field name="grandTotal" title="Grand Total" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="productStoreId" title="Product Store ID" required-field="false">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="submitButton" title="Create Order"><submit button-type="button"/></field>
+        </form>
+
+        <form name="CreateOrderItemForm" type="single" target="createOrderItem" default-map-name="OrderItemNick">
+            <field name="orderId" title="Order ID" required-field="true">
+                <drop-down allow-empty="false">
+                    <entity-options entity-name="OrderHeaderNick" description="${orderId}" key-field-name="orderId">
+                        <entity-order-by field-name="orderId"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="orderItemSeqId" title="Order Item Sequence ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="externalId" title="External ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="quantity" title="Quantity" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="statusId" title="Current Status" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="productId" title="Product ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="unitPrice" title="Unit Price" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="discountRate" title="Discount Rate" required-field="false">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="itemDescription" title="Item Description" required-field="false">
+                <text size="40" maxlength="40"/>
+            </field>
+            <field name="submitButton" title="Create Item"><submit button-type="button"/></field>
+        </form>
+
+        <form name="CreateOrderRoleForm" type="single" target="createOrderRole" default-map-name="OrderRoleNick">
+            <field name="orderId" title="Order ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="partyId" title="Party ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="roleTypeId" title="Role Type ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="submitButton" title="Create Role"><submit button-type="button"/></field>
+        </form>
+
+        <form name="CreateOrderContactMechForm" type="single" target="createOrderContactMech" default-map-name="OrderContactMechNick">
+            <field name="orderId" title="Order ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="contactMechId" title="Contact Mech ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="orderItemSeqId" title="Order Item Sequence ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="contactMechPurposeTypeId" title="Purpose Type ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="submitButton" title="Create Contact Mech"><submit button-type="button"/></field>
+        </form>
+
+        <form name="CreateOrderPaymentPreferenceForm" type="single" target="createOrderPaymentPreference" default-map-name="OrderPaymentPreferenceNick">
+            <field name="orderPaymentPreferenceId" title="Payment Preference ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="orderId" title="Order ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="orderItemSeqId" title="Order Item Sequence ID" required-field="false">
+                <text size="10" maxlength="10"/>
+            </field>
+            <field name="productPricePurposeId" title="Product Price Purpose ID" required-field="false">
+                <drop-down allow-empty="false">
+                    <entity-options entity-name="ProductPricePurposeNick" description="${description}" key-field-name="productPricePurposeId">
+                        <entity-order-by field-name="productPricePurposeId"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="paymentMethodTypeId" title="Payment Method Type ID" required-field="true">
+                <drop-down allow-empty="false">
+                    <entity-options entity-name="PaymentMethodType" description="${description}" key-field-name="paymentMethodTypeId">
+                        <entity-order-by field-name="paymentMethodTypeId"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="paymentMethodId" title="Payment Method ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="submitButton" title="Create Payment Pref"><submit button-type="button"/></field>
+        </form>
+
+        <form name="CreateOrderAdjustmentForm" type="single" target="createOrderAdjustment" default-map-name="OrderAdjustmentNick">
+            <field name="orderAdjustmentId" title="Adjustment ID" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="orderAdjustmentTypeId" title="Adjustment Type ID" required-field="true">
+                <drop-down allow-empty="false">
+                    <entity-options entity-name="OrderAdjustmentTypeNick" description="${description}" key-field-name="orderAdjustmentTypeId">
+                        <entity-order-by field-name="description"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="orderId" title="Order ID" required-field="true">
+                <drop-down allow-empty="false">
+                    <entity-options entity-name="OrderHeaderNick" description="${orderName} [${orderId}]" key-field-name="orderId">
+                        <entity-order-by field-name="orderId"/>
+                    </entity-options>
+                </drop-down>
+            </field>
+            <field name="orderItemSeqId" title="Order Item Sequence ID" required-field="false">
+                <text size="10" maxlength="10"/>
+            </field>
+            <field name="comment" title="Comment" required-field="false">
+                <textarea cols="40" rows="3"/>
+            </field>
+            <field name="description" title="Description" required-field="false">
+                <textarea cols="40" rows="3"/>
+            </field>
+            <field name="amount" title="Amount" required-field="true">
+                <text size="20" maxlength="20"/>
+            </field>
+            <field name="submitButton" title="Create Adjustment"><submit button-type="button"/></field>
+        </form>
+
+    </forms>
+
+</forms>

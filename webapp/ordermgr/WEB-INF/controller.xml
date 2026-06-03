@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://ofbiz.apache.org/Site-Conf" xsi:schemaLocation="http://ofbiz.apache.org/Site-Conf http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!-- The controller elements that are common to all OFBiz components
+         can be found in the following xml file. A component can override the
+         elements found in the common-controller.xml file. -->
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+
+    <description>Ordermgr Component Site Configuration File</description>
+
+    <!-- Events to run on every request before security (chains exempt) -->
+    <!--
+    <preprocessor>
+    </preprocessor>
+    -->
+    <!-- Events to run on every request after all other processing (chains exempt) -->
+    <!--
+    <postprocessor>
+        <event name="test" type="java" path="org.apache.ofbiz.webapp.event.TestEvent" invoke="test"/>
+    </postprocessor>
+    -->
+
+
+
+
+
+
+        <!-- ═══════════════════════════ REQUEST MAPS ═══════════════════════════ -->
+
+        <request-map uri="main">
+            <security https="true" auth="true"/>
+            <response name="success" type="view" value="main"/>
+        </request-map>
+
+        <!-- Order Header -->
+        <request-map uri="orderHeader">
+            <response name="success" type="view" value="CreateOrderHeader"/>
+        </request-map>
+        <request-map uri="createOrderHeader">
+            <event type="service" invoke="CreateOrderHeader"/>
+            <response name="success" type="request-redirect" value="orderHeader"/>
+            <response name="error" type="view" value="CreateOrderHeader"/>
+        </request-map>
+
+        <!-- Order Item -->
+        <request-map uri="orderItem">
+            <response name="success" type="view" value="CreateOrderItem"/>
+        </request-map>
+        <request-map uri="createOrderItem">
+            <event type="service" invoke="CreateOrderItem"/>
+            <response name="success" type="request-redirect" value="orderItem"/>
+            <response name="error" type="view" value="CreateOrderItem"/>
+        </request-map>
+
+        <!-- Order Role -->
+        <request-map uri="orderRole">
+            <response name="success" type="view" value="CreateOrderRole"/>
+        </request-map>
+        <!--
+            FIX — service invoke was "CreateOrderRoleNick" → corrected to "CreateOrderRole"
+                  (all other services follow the plain name convention; "Nick" suffix was a mistake)
+        -->
+        <request-map uri="createOrderRole">
+            <event type="service" invoke="CreateOrderRole"/>
+            <response name="success" type="request-redirect" value="orderRole"/>
+            <response name="error" type="view" value="CreateOrderRole"/>
+        </request-map>
+
+        <!-- Order Contact Mech -->
+        <request-map uri="orderContactMech">
+            <response name="success" type="view" value="CreateOrderContactMech"/>
+        </request-map>
+        <request-map uri="createOrderContactMech">
+            <event type="service" invoke="CreateOrderContactMech"/>
+            <response name="success" type="request-redirect" value="orderContactMech"/>
+            <response name="error" type="view" value="CreateOrderContactMech"/>
+        </request-map>
+
+        <!-- Order Payment Preference -->
+        <request-map uri="orderPaymentPreference">
+            <response name="success" type="view" value="CreateOrderPaymentPreference"/>
+        </request-map>
+        <request-map uri="createOrderPaymentPreference">
+            <event type="service" invoke="CreateOrderPaymentPreference"/>
+            <response name="success" type="request-redirect" value="orderPaymentPreference"/>
+            <response name="error" type="view" value="CreateOrderPaymentPreference"/>
+        </request-map>
+
+        <!-- Order Adjustment -->
+        <request-map uri="orderAdjustment">
+            <response name="success" type="view" value="CreateOrderAdjustment"/>
+        </request-map>
+        <request-map uri="createOrderAdjustment">
+            <event type="service" invoke="createOrderAdjustment"/>
+            <response name="success" type="request-redirect" value="orderAdjustment"/>
+            <response name="error" type="view" value="CreateOrderAdjustment"/>
+        </request-map>
+
+        <!-- ════════════════════════════ VIEW MAPS ════════════════════════════ -->
+
+        <!-- FIX — "main" view-map was missing entirely -->
+        <view-map name="main" type="screen"
+                  page="component://ordermgr/widget/OrdermgrScreens.xml#main"/>
+
+        <view-map name="CreateOrderHeader" type="screen"
+                  page="component://ordermgr/widget/OrdermgrScreens.xml#CreateOrderHeader"/>
+
+        <view-map name="CreateOrderItem" type="screen"
+                  page="component://ordermgr/widget/OrdermgrScreens.xml#CreateOrderItem"/>
+
+        <view-map name="CreateOrderRole" type="screen"
+                  page="component://ordermgr/widget/OrdermgrScreens.xml#CreateOrderRole"/>
+
+        <view-map name="CreateOrderContactMech" type="screen"
+                  page="component://ordermgr/widget/OrdermgrScreens.xml#CreateOrderContactMech"/>
+
+        <view-map name="CreateOrderPaymentPreference" type="screen"
+                  page="component://ordermgr/widget/OrdermgrScreens.xml#CreateOrderPaymentPreference"/>
+
+        <view-map name="CreateOrderAdjustment" type="screen"
+                  page="component://ordermgr/widget/OrdermgrScreens.xml#CreateOrderAdjustment"/>
+
+    </site-conf>
+

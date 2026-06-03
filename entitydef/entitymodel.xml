@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/entitymodel.xsd">
+<title>Entity of Ordermgr Component</title>
+<description>None</description>
+<copyright></copyright>
+<version></version>
+
+<entity entity-name="OrderTypeNick" package-name="org.apache.ofbiz.order.order">
+    <field name="OrderTypeId" type="id"/>
+    <field name="Description" type="description"/>
+    <field name="HashTable" type="indicator"/>
+
+    <prim-key field="OrderTypeId"/>
+</entity>
+
+<entity entity-name="OrderHeaderNick" package-name="org.apache.ofbiz.order.order" title="Order Header Entity">
+    <field name="orderId" type="id"/>
+    <field name="internalId" type="id"/>
+    <field name="orderName" type="name"/>
+    <field name="orderTypeId" type="id"/>
+    <field name="statusId" type="id"/>
+    <field name="originFacilityId" type="id"/>
+    <field name="entryDate" type="date-time"/>
+    <field name="orderDate" type="date-time"/>
+    <field name="grandTotal" type="currency-amount"/>
+    <field name="productStoreId" type="id"/>
+
+    <prim-key field="orderId"/>
+
+    <relation type="one" fk-name="ORD_HDR_NICK_PS" rel-entity-name="ProductStoreNick">
+        <key-map field-name="productStoreId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_HDR_NICK_OT" rel-entity-name="OrderTypeNick">
+        <key-map field-name="OrderTypeId"/>
+    </relation>
+    
+</entity>
+
+<entity entity-name="OrderItemNick" package-name="org.apache.ofbiz.order.order" title="Order Item Entity">
+    <field name="orderId" type="id"/>
+    <field name="orderItemSeqId" type="id"/>
+    <field name="externalId" type="id"/>
+    <field name="quantity" type="fixed-point"/>
+    <field name="statusId" type="id"/>
+    <field name="productId" type="id"/>
+    <field name="unitPrice" type="currency-amount"/>
+    <field name="discountRate" type="fixed-point"/>
+    <field name="itemDescription" type="description"/>
+
+    <prim-key field="orderId"/>
+    <prim-key field="orderItemSeqId"/>
+
+    <relation type="one" fk-name="ORD_ITM_NICK_OH" rel-entity-name="OrderHeaderNick">
+        <key-map field-name="orderId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_ITM_NICK_PRD" rel-entity-name="ProductNick">
+        <key-map field-name="productId"/>
+    </relation>
+</entity>
+
+<entity entity-name="OrderRoleNick" package-name="org.apache.ofbiz.order.order" title="Order Role Entity">
+    <field name="orderId" type="id"/>
+    <field name="partyId" type="id"/>
+    <field name="roleTypeId" type="id"/>
+
+    <prim-key field="orderId"/>
+    <prim-key field="partyId"/>
+    <prim-key field="roleTypeId"/>
+
+    <relation type="one" fk-name="ORD_ROLE_NICK_OH" rel-entity-name="OrderHeaderNick">
+        <key-map field-name="orderId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_ROLE_NICK_PTY" rel-entity-name="Party">
+        <key-map field-name="partyId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_ROLE_NICK_RTYP" rel-entity-name="RoleType">
+        <key-map field-name="roleTypeId"/>
+    </relation>
+</entity>
+
+<entity entity-name="OrderAdjustmentNick" package-name="org.apache.ofbiz.order.order" title="Order Adjustment Entity">
+    <field name="orderAdjustmentId" type="id"/>
+    <field name="orderAdjustmentTypeId" type="id"/>
+    <field name="orderId" type="id"/>
+    <field name="orderItemSeqId" type="id"/>
+    <field name="comment" type="comment"/>
+    <field name="description" type="description"/>
+    <field name="amount" type="currency-amount"/>
+
+    <prim-key field="orderAdjustmentId"/>
+
+    <relation type="one" fk-name="ORD_ADJ_NICK_OH" rel-entity-name="OrderHeaderNick">
+        <key-map field-name="orderId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_ADJ_NICK_OI" rel-entity-name="OrderItemNick">
+        <key-map field-name="orderId"/>
+        <key-map field-name="orderItemSeqId"/>
+    </relation>
+</entity>
+
+<entity entity-name="OrderPaymentPreferenceNick" package-name="org.apache.ofbiz.order.order" title="Order Payment Preference Entity">
+    <field name="orderPaymentPreferenceId" type="id"/>
+    <field name="orderId" type="id"/>
+    <field name="orderItemSeqId" type="id"/>
+    <field name="productPricePurposeId" type="id"/>
+    <field name="paymentMethodTypeId" type="id"/>
+    <field name="paymentMethodId" type="id"/>
+
+    <prim-key field="orderPaymentPreferenceId"/>
+
+    <relation type="one" fk-name="ORD_PAYPRF_NICK_OH" rel-entity-name="OrderHeaderNick">
+        <key-map field-name="orderId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_PAYPRF_NICK_OI" rel-entity-name="OrderItemNick">
+        <key-map field-name="orderId"/>
+        <key-map field-name="orderItemSeqId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_PAYPRF_NICK_PPP" rel-entity-name="ProductPricePurposeNick">
+        <key-map field-name="productPricePurposeId"/>
+    </relation>
+</entity>
+
+<entity entity-name="PaymentMethodTypeNick" package-name="org.apache.ofbiz.accounting.payment" title="Payment Method Type">
+    <field name="paymentMethodTypeId" type="id"/>
+    <field name="description" type="description"/>
+    <field name="hasTable" type="indicator"/>
+    <field name="defaultGlAccountId" type="id"/>
+
+    <prim-key field="paymentMethodTypeId"/>
+</entity>
+
+<entity entity-name="OrderContactMechNick" package-name="org.apache.ofbiz.order.order" title="Order Contact Mechanism Entity">
+    <field name="orderId" type="id"/>
+    <field name="contactMechId" type="id"/>
+    <field name="orderItemSeqId" type="id"/>
+    <field name="contactMechPurposeTypeId" type="id"/>
+
+    <prim-key field="orderId"/>
+    <prim-key field="contactMechId"/>
+    <prim-key field="orderItemSeqId"/>
+    <prim-key field="contactMechPurposeTypeId"/>
+
+    <relation type="one" fk-name="ORD_CMECH_NICK_OH" rel-entity-name="OrderHeaderNick">
+        <key-map field-name="orderId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_CMECH_NICK_OI" rel-entity-name="OrderItemNick">
+        <key-map field-name="orderId"/>
+        <key-map field-name="orderItemSeqId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_CMECH_NICK_CM" rel-entity-name="ContactMech">
+        <key-map field-name="contactMechId"/>
+    </relation>
+    <relation type="one" fk-name="ORD_CMECH_NICK_CMPT" rel-entity-name="ContactMechPurposeType">
+        <key-map field-name="contactMechPurposeTypeId"/>
+    </relation>
+</entity>
+
+</entitymodel>
