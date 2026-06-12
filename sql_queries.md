@@ -72,7 +72,8 @@ SELECT
          THEN GI.good_Identification_type_id ELSE NULL END AS Shopify_id
 FROM product p
 LEFT JOIN good_Identification GI ON GI.product_id = p.product_id
-WHERE product_type_id = "FINISHED_GOOD";
+WHERE product_type_id = "FINISHED_GOOD"
+GROUP BY ORDER_ID ;
 ```
 
 ---
@@ -118,7 +119,7 @@ JOIN
     ON os.ORDER_ID = OI.ORDER_ID 
     AND os.ORDER_ITEM_SEQ_ID = OI.ORDER_ITEM_SEQ_ID 
 WHERE 
-    os.STATUS_ID = 'ITEM_COMPLETED' 
+    os.STATUS_ID = 'ORDER_COMPLETED' 
     AND os.STATUS_DATETIME >= '2023-08-01' 
     AND os.STATUS_DATETIME <= '2023-09-01';
 ```
