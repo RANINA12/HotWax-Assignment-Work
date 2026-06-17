@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/services.xsd">
+    <description>Relationshipmgr Services</description>
+    <vendor></vendor>
+    <version>1.0</version>
+
+    <service name="noSyntaxError" engine="interface">
+        <description>
+            Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
+        </description>
+    </service>
+
+    <service name="createPersonAndParty" engine="groovy"
+             location="component://relationshipmgr/GroovyScripts/Party/CreatePersonAndParty.groovy"
+             invoke="" auth="true">
+        <description>Create Party + Person in one transaction</description>
+        <!-- Party fields -->
+        <attribute name="partyTypeId"  type="String" mode="IN" optional="true"  default-value="PERSON"/>
+        <attribute name="statusId"     type="String" mode="IN" optional="true"/>
+        <attribute name="description"  type="String" mode="IN" optional="true"/>
+
+        <!-- Person fields -->
+        <attribute name="salutation"   type="String" mode="IN" optional="true"/>
+        <attribute name="firstName"    type="String" mode="IN" optional="false"/>
+        <attribute name="middleName"   type="String" mode="IN" optional="true"/>
+        <attribute name="lastName"     type="String" mode="IN" optional="false"/>
+        <attribute name="birthDate"    type="java.sql.Date" mode="IN" optional="true"/>
+        <attribute name="height"       type="Double" mode="IN" optional="true"/>
+        <attribute name="weight"       type="Double" mode="IN" optional="true"/>
+
+        <!-- CHANGED: Replaced overrides with standard attributes -->
+        <attribute name="personalTitle" type="String" mode="IN" optional="false"/>
+        <attribute name="suffix"        type="String" mode="IN" optional="false"/>
+
+        <!-- Returned to caller -->
+        <attribute name="partyId"      type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="createPartyGroupAndParty" engine="groovy"
+             location="component://relationshipmgr/GroovyScripts/Party/CreatePartyGroupAndParty.groovy"
+             invoke="" auth="true">
+        <description>Create Party + PartyGroup in one transaction</description>
+        <attribute name="partyTypeId"     type="String" mode="IN" optional="true" default-value="PARTY_GROUP"/>
+        <attribute name="statusId"        type="String" mode="IN" optional="true"/>
+        <attribute name="groupName"       type="String" mode="IN" optional="false"/>
+        <attribute name="numEmployee"     type="Long"   mode="IN" optional="true"/>
+        <attribute name="annualRevenue"   type="BigDecimal" mode="IN" optional="true"/>
+        <attribute name="partyId"         type="String" mode="OUT" optional="false"/>
+    </service>
+
+        <service name="createPartyType" default-entity-name="PartyType" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="parentTypeId" optional="true"/>
+            <override name="hasTable"     optional="true"/>
+            <override name="description"  optional="true"/>
+        </service>
+
+        <service name="updatePartyType" default-entity-name="PartyType" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyType" default-entity-name="PartyType" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPartyStatusType" default-entity-name="PartyStatusType" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Status Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="hasTable"    optional="true"/>
+            <override name="description" optional="true"/>
+        </service>
+
+        <service name="updatePartyStatusType" default-entity-name="PartyStatusType" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Status Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyStatusType" default-entity-name="PartyStatusType" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Status Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createParty" default-entity-name="Party" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party record — partyId is auto-sequenced</description>
+            <auto-attributes include="pk"    mode="OUT" optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="statusId"     optional="true"/>
+            <override name="description"  optional="true"/>
+        </service>
+
+        <service name="updateParty" default-entity-name="Party" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deleteParty" default-entity-name="Party" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPerson" default-entity-name="Person" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Person record (partyId must already exist in Party)</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="salutation" optional="true"/>
+            <override name="height"     optional="true"/>
+            <override name="weight"     optional="true"/>
+            <override name="birthDate"  optional="true"/>
+        </service>
+
+        <service name="updatePerson" default-entity-name="Person" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Person record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePerson" default-entity-name="Person" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Person record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPartyGroup" default-entity-name="PartyGroup" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Group record (partyId must already exist in Party)</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="numEmployee"    optional="true"/>
+            <override name="annualRevenue"  optional="true"/>
+        </service>
+
+        <service name="updatePartyGroup" default-entity-name="PartyGroup" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Group record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyGroup" default-entity-name="PartyGroup" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Group record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPartyClassificationType" default-entity-name="PartyClassificationType" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Classification Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="parentTypeId" optional="true"/>
+            <override name="hasTable"     optional="true"/>
+            <override name="description"  optional="true"/>
+        </service>
+
+        <service name="updatePartyClassificationType" default-entity-name="PartyClassificationType" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Classification Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyClassificationType" default-entity-name="PartyClassificationType" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Classification Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPartyClassificationGroup" default-entity-name="PartyClassificationGroup" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Classification Group record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="parentGroupId" optional="true"/>
+            <override name="description"   optional="true"/>
+        </service>
+
+        <service name="updatePartyClassificationGroup" default-entity-name="PartyClassificationGroup" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Classification Group record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyClassificationGroup" default-entity-name="PartyClassificationGroup" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Classification Group record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPartyClassification" default-entity-name="PartyClassification" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Classification record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="thruDate" optional="true"/>
+        </service>
+
+        <service name="updatePartyClassification" default-entity-name="PartyClassification" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Classification record (expire by setting thruDate)</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyClassification" default-entity-name="PartyClassification" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Classification record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createRoleType" default-entity-name="RoleType" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Role Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="parentTypeId" optional="true"/>
+            <override name="hasTable"     optional="true"/>
+        </service>
+
+        <service name="updateRoleType" default-entity-name="RoleType" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Role Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deleteRoleType" default-entity-name="RoleType" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Role Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPartyRole" default-entity-name="PartyRole" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Role record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="fromPartyRelationship" optional="true"/>
+            <override name="toPartyRelationship"   optional="true"/>
+        </service>
+
+        <service name="updatePartyRole" default-entity-name="PartyRole" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Role record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyRole" default-entity-name="PartyRole" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Role record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPartyRelationshipType" default-entity-name="PartyRelationshipType" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Relationship Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="parentTypeId"          optional="true"/>
+            <override name="hasTable"              optional="true"/>
+            <override name="description"           optional="true"/>
+            <override name="roleTypeIdValidFrom"   optional="true"/>
+            <override name="roleTypeIdValidTo"     optional="true"/>
+        </service>
+
+        <service name="updatePartyRelationshipType" default-entity-name="PartyRelationshipType" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Relationship Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyRelationshipType" default-entity-name="PartyRelationshipType" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Relationship Type record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createPartyRelationship" default-entity-name="PartyRelationship" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Party Relationship record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="thruDate" optional="true"/>
+        </service>
+
+        <service name="updatePartyRelationship" default-entity-name="PartyRelationship" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Relationship record (e.g. set thruDate to expire)</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deletePartyRelationship" default-entity-name="PartyRelationship" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Relationship record</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createContactMechType" default-entity-name="ContactMechType" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Contact Mechanism Type</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="parentTypeId" optional="true"/>
+            <override name="hasTable"     optional="true"/>
+            <override name="description"  optional="true"/>
+        </service>
+
+        <service name="updateContactMechType" default-entity-name="ContactMechType" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Contact Mechanism Type</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deleteContactMechType" default-entity-name="ContactMechType" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Contact Mechanism Type</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createContactMechPurposeType" default-entity-name="ContactMechPurposeType" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Contact Mechanism Purpose Type</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="parentTypeId" optional="true"/>
+            <override name="hasTable"     optional="true"/>
+            <override name="description"  optional="true"/>
+        </service>
+
+        <service name="updateContactMechPurposeType" default-entity-name="ContactMechPurposeType" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Contact Mechanism Purpose Type</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="true"/>
+        </service>
+
+        <service name="deleteContactMechPurposeType" default-entity-name="ContactMechPurposeType" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Contact Mechanism Purpose Type</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+        </service>
+
+        <service name="createContactMechTypePurpose" default-entity-name="ContactMechTypePurpose" engine="entity-auto" invoke="create" auth="true">
+            <description>Link a Purpose Type to a Contact Mechanism Type</description>
+            <auto-attributes include="pk" mode="IN" optional="false"/>
+        </service>
+
+        <service name="deleteContactMechTypePurpose" default-entity-name="ContactMechTypePurpose" engine="entity-auto" invoke="delete" auth="true">
+            <description>Remove a Purpose Type from a Contact Mechanism Type</description>
+            <auto-attributes include="pk" mode="IN" optional="false"/>
+        </service>
+
+        <service name="createContactMech" default-entity-name="ContactMech" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a base Contact Mechanism record — contactMechId is auto-sequenced</description>
+            <auto-attributes include="pk"    mode="OUT" optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="infoString" optional="true"/>
+        </service>
+
+        <service name="updateContactMech" default-entity-name="ContactMech" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Contact Mechanism record</description>
+            <auto-attributes include="pk"    mode="IN" optional="false"/>
+            <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        </service>
+
+        <service name="deleteContactMech" default-entity-name="ContactMech" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Contact Mechanism record</description>
+            <auto-attributes include="pk" mode="IN" optional="false"/>
+        </service>
+
+        <service name="createPostalAddress" default-entity-name="PostalAddress" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Postal Address (contactMechId must exist in ContactMech)</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="toName"               optional="true"/>
+            <override name="attnName"             optional="true"/>
+            <override name="address2"             optional="true"/>
+            <override name="houseNumber"          optional="true"/>
+            <override name="houseNumberExt"       optional="true"/>
+            <override name="directions"           optional="true"/>
+            <override name="cityGeoId"            optional="true"/>
+            <override name="postalCodeExt"        optional="true"/>
+            <override name="countryGeoId"         optional="true"/>
+            <override name="stateProvinceGeoId"   optional="true"/>
+            <override name="countyGeoId"          optional="true"/>
+            <override name="municipalityGeoId"    optional="true"/>
+            <override name="postalCodeGeoId"      optional="true"/>
+            <override name="geoPointId"           optional="true"/>
+        </service>
+
+        <service name="updatePostalAddress" default-entity-name="PostalAddress" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Postal Address</description>
+            <auto-attributes include="pk"    mode="IN" optional="false"/>
+            <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        </service>
+
+        <service name="deletePostalAddress" default-entity-name="PostalAddress" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Postal Address</description>
+            <auto-attributes include="pk" mode="IN" optional="false"/>
+        </service>
+
+        <service name="createTelecomNumber" default-entity-name="TelecomNumber" engine="entity-auto" invoke="create" auth="true">
+            <description>Create a Telecom Number (contactMechId must exist in ContactMech)</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="countryCode"  optional="true"/>
+            <override name="areaCode"     optional="true"/>
+            <override name="askForName"   optional="true"/>
+        </service>
+
+        <service name="updateTelecomNumber" default-entity-name="TelecomNumber" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Telecom Number</description>
+            <auto-attributes include="pk"    mode="IN" optional="false"/>
+            <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        </service>
+
+        <service name="deleteTelecomNumber" default-entity-name="TelecomNumber" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Telecom Number</description>
+            <auto-attributes include="pk" mode="IN" optional="false"/>
+        </service>
+
+        <service name="createPartyContactMech" default-entity-name="PartyContactMech" engine="entity-auto" invoke="create" auth="true">
+            <description>Link a Contact Mechanism to a Party</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="thruDate"                 optional="true"/>
+            <override name="roleTypeId"               optional="true"/>
+            <override name="allowSolicitation"        optional="true"/>
+            <override name="extension"                optional="true"/>
+            <override name="verified"                 optional="true"/>
+            <override name="comments"                 optional="true"/>
+            <override name="yearsWithContactMech"     optional="true"/>
+            <override name="monthsWithContactMech"    optional="true"/>
+        </service>
+
+        <service name="updatePartyContactMech" default-entity-name="PartyContactMech" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Contact Mechanism link (e.g. set thruDate to expire)</description>
+            <auto-attributes include="pk"    mode="IN" optional="false"/>
+            <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        </service>
+
+        <service name="deletePartyContactMech" default-entity-name="PartyContactMech" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Contact Mechanism link</description>
+            <auto-attributes include="pk" mode="IN" optional="false"/>
+        </service>
+
+        <service name="createPartyContactMechPurpose" default-entity-name="PartyContactMechPurpose" engine="entity-auto" invoke="create" auth="true">
+            <description>Assign a purpose to a Party Contact Mechanism</description>
+            <auto-attributes include="pk"    mode="IN"  optional="false"/>
+            <auto-attributes include="nonpk" mode="IN"  optional="false"/>
+            <override name="thruDate" optional="true"/>
+        </service>
+
+        <service name="updatePartyContactMechPurpose" default-entity-name="PartyContactMechPurpose" engine="entity-auto" invoke="update" auth="true">
+            <description>Update a Party Contact Mechanism Purpose (e.g. expire it)</description>
+            <auto-attributes include="pk"    mode="IN" optional="false"/>
+            <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        </service>
+
+        <service name="deletePartyContactMechPurpose" default-entity-name="PartyContactMechPurpose" engine="entity-auto" invoke="delete" auth="true">
+            <description>Delete a Party Contact Mechanism Purpose</description>
+            <auto-attributes include="pk" mode="IN" optional="false"/>
+        </service>
+
+        <service name="createPostalAddressAndContactMech"
+                 engine="groovy"
+                 location="component://relationshipmgr/groovyScripts/contact/CreatePostalAddressAndContactMech.groovy"
+                 invoke="" auth="true">
+            <description>Create ContactMech (POSTAL_ADDRESS) + PostalAddress in one transaction</description>
+            <!-- PostalAddress fields -->
+            <attribute name="toName"              type="String"     mode="IN" optional="true"/>
+            <attribute name="attnName"            type="String"     mode="IN" optional="true"/>
+            <attribute name="address1"            type="String"     mode="IN" optional="false"/>
+            <attribute name="address2"            type="String"     mode="IN" optional="true"/>
+            <attribute name="city"                type="String"     mode="IN" optional="false"/>
+            <attribute name="postalCode"          type="String"     mode="IN" optional="false"/>
+            <attribute name="stateProvinceGeoId"  type="String"     mode="IN" optional="true"/>
+            <attribute name="countryGeoId"        type="String"     mode="IN" optional="true"/>
+            <!-- OUT -->
+            <attribute name="contactMechId"       type="String"     mode="OUT" optional="false"/>
+        </service>
+
+        <service name="createTelecomNumberAndContactMech"
+                 engine="groovy"
+                 location="component://relationshipmgr/groovyScripts/contact/CreateTelecomNumberAndContactMech.groovy"
+                 invoke="" auth="true">
+            <description>Create ContactMech (TELECOM_NUMBER) + TelecomNumber in one transaction</description>
+            <attribute name="countryCode"    type="String" mode="IN" optional="true"/>
+            <attribute name="areaCode"       type="String" mode="IN" optional="true"/>
+            <attribute name="contactNumber"  type="String" mode="IN" optional="false"/>
+            <attribute name="askForName"     type="String" mode="IN" optional="true"/>
+            <!-- OUT -->
+            <attribute name="contactMechId"  type="String" mode="OUT" optional="false"/>
+        </service>
+
+        <service name="createEmailContactMech"
+                 engine="groovy"
+                 location="component://relationshipmgr/GroovyScripts/contact/CreateEmailContactMech.groovy"
+                 invoke="" auth="true">
+            <description>Create ContactMech (EMAIL_ADDRESS) in one transaction</description>
+            <attribute name="infoString"     type="String" mode="IN"  optional="false"/>
+            <attribute name="contactMechId"  type="String" mode="OUT" optional="false"/>
+        </service>
+
+</services>

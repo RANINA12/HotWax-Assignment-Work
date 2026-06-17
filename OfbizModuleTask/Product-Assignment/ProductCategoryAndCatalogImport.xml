@@ -1,0 +1,34 @@
+<entity-engine-xml>
+
+    <ProdCatalog prodCatalogId="TOP_TRENDING" catalogName="TOP-TRENDING PRODUCT" useQuickAdd="Y"/>
+    <ProductCategory productCategoryId="SUMMER_COLLECTION" productCategoryTypeId="CATALOG_CATEGORY" categoryName="Summer Collection"/>
+    <ProductCategory productCategoryId="WOMEN_WEAR" productCategoryTypeId="CATALOG_CATEGORY" categoryName="Women Wear"/>
+    <ProductCategory productCategoryId="MEN_WEAR" productCategoryTypeId="CATALOG_CATEGORY" categoryName="Men Wear"/>
+    <ProductCategory productCategoryId="ELECTRONIC" productCategoryTypeId="CATALOG_CATEGORY" categoryName="Electronic"/>
+    <ProductCategoryRollup parentProductCategoryId="SUMMER_COLLECTION" productCategoryId="WOMEN_WEAR" fromDate="2024-01-01 00:00:00.0"/>
+    <ProductCategoryRollup parentProductCategoryId="SUMMER_COLLECTION" productCategoryId="MEN_WEAR" fromDate="2024-01-01 00:00:00.0"/>
+    <ProductCategoryRollup parentProductCategoryId="SUMMER_COLLECTION" productCategoryId="ELECTRONIC" fromDate="2024-01-01 00:00:00.0"/>
+    <ProdCatalogCategory prodCatalogId="TOP_TRENDING" productCategoryId="SUMMER_COLLECTION" fromDate="2024-01-01 00:00:00.0" sequenceNum="1" prodCatalogCategoryTypeId="PCCT_BROWSE_ROOT"/>
+    <Product productId="WOMEN-WATCH" productTypeId="FINISHED_GOOD" internalName="Women's Luxury Watch" isVirtual="N" isVariant="N"/>
+    <Product productId="WOMEN-SHOES" productTypeId="FINISHED_GOOD" internalName="Women's Running Shoes" isVirtual="N" isVariant="N"/>
+    <Product productId="MENS-CAP" productTypeId="FINISHED_GOOD" internalName="Men's Baseball Cap" isVirtual="N" isVariant="N"/>
+    <Product productId="MENS-SHOES" productTypeId="FINISHED_GOOD" internalName="Men's Leather Shoes" isVirtual="N" isVariant="N"/>
+    <Product productId="LAPTOP" productTypeId="FINISHED_GOOD" internalName="Pro Gaming Laptop" isVirtual="N" isVariant="N"/>
+    <Product productId="COMPUTER" productTypeId="FINISHED_GOOD" internalName="Desktop Computer Workstation" isVirtual="N" isVariant="N"/>
+    <ProductPrice productId="WOMEN-WATCH" productPricePurposeId="PURCHASE" productPriceTypeId="DEFAULT_PRICE" currencyUomId="USD" productStoreGroupId="_NA_" fromDate="2024-01-01 00:00:00.0" price="145.00"/>
+    <ProductPrice productId="WOMEN-SHOES" productPricePurposeId="PURCHASE" productPriceTypeId="DEFAULT_PRICE" currencyUomId="USD" productStoreGroupId="_NA_" fromDate="2024-01-01 00:00:00.0" price="85.50"/>
+    <ProductPrice productId="MENS-CAP" productPricePurposeId="PURCHASE" productPriceTypeId="DEFAULT_PRICE" currencyUomId="USD" productStoreGroupId="_NA_" fromDate="2024-01-01 00:00:00.0" price="24.99"/>
+    <ProductPrice productId="MENS-SHOES" productPricePurposeId="PURCHASE" productPriceTypeId="DEFAULT_PRICE" currencyUomId="USD" productStoreGroupId="_NA_" fromDate="2024-01-01 00:00:00.0" price="110.00"/>
+    <ProductPrice productId="LAPTOP" productPricePurposeId="PURCHASE" productPriceTypeId="DEFAULT_PRICE" currencyUomId="USD" productStoreGroupId="_NA_" fromDate="2024-01-01 00:00:00.0" price="1299.99"/>
+    <ProductPrice productId="COMPUTER" productPricePurposeId="PURCHASE" productPriceTypeId="DEFAULT_PRICE" currencyUomId="USD" productStoreGroupId="_NA_" fromDate="2024-01-01 00:00:00.0" price="950.00"/>
+
+    <ProductCategoryMember productCategoryId="WOMEN_WEAR" productId="WOMEN-WATCH" fromDate="2024-01-01 00:00:00.0" sequenceNum="1"/>
+    <ProductCategoryMember productCategoryId="WOMEN_WEAR" productId="WOMEN-SHOES" fromDate="2024-01-01 00:00:00.0" sequenceNum="2"/>
+    <ProductCategoryMember productCategoryId="MEN_WEAR" productId="MENS-CAP" fromDate="2024-01-01 00:00:00.0" sequenceNum="1"/>
+    <ProductCategoryMember productCategoryId="MEN_WEAR" productId="MENS-SHOES" fromDate="2024-01-01 00:00:00.0" sequenceNum="2"/>
+    <ProductCategoryMember productCategoryId="ELECTRONIC" productId="LAPTOP" fromDate="2024-01-01 00:00:00.0" sequenceNum="1"/>
+    <ProductCategoryMember productCategoryId="ELECTRONIC" productId="COMPUTER" fromDate="2024-01-01 00:00:00.0" sequenceNum="2"/>
+
+    <ProductStoreCatalog productStoreId="9000" prodCatalogId="TOP_TRENDING" fromDate="2024-01-01 00:00:00.0" sequenceNum="2"/>
+
+</entity-engine-xml>
