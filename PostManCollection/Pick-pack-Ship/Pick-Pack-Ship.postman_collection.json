@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "2af1c593-9a01-4304-ac29-f00df97b520f",
+		"name": "Pick-Pack-Ship",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "53856978",
+		"_collection_link": "https://nikunj-bisani-7577710.postman.co/workspace/Nikunj-Bisani's-Workspace~a3ea5f87-7058-4989-8e4b-78c63e4dd163/collection/53856978-2af1c593-9a01-4304-ac29-f00df97b520f?action=share&source=collection_link&creator=53856978"
+	},
+	"item": [
+		{
+			"name": "Pick",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"   pm.environment.set(\"shipmentId\", response.shipmentIds[0]);",
+							"    pm.execution.setNextRequest(\"Pack\");",
+							"} else {",
+							"    console.log(\"Pick request failed\");",
+							"    pm.execution.setNextRequest(null);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// No pre-request logic needed here. Response handling moved to Tests."
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "moquisessiontoken",
+						"value": "{{moquisessiontoken}}",
+						"type": "text"
+					},
+					{
+						"key": "x-csrf-token",
+						"value": "{{x-csrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"facilityId\": \"{{facilityId}}\",\n    \"orderItems\": [\n        {\n            \"orderId\": \"{{orderId}}\",\n            \"orderItemSeqId\": \"00101\",\n            \"shipGroupSeqId\": \"{{shipGroupSeqId}}\",\n            \"productId\": \"M103143\",\n            \"quantity\": 1\n        }\n    ],\n    \"packageName\": \"A\",\n    \"pickers\": [\n        {\n            \"partyId\": \"10000\",\n            \"roleTypeId\": \"WAREHOUSE_PICKER\"\n        }\n    ],\n    \"shipmentMethodTypeId\": \"STANDARD\",\n    \"statusId\": \"PICKLIST_ASSIGNED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/createOrderFulfillmentWave",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"createOrderFulfillmentWave"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pack",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    pm.execution.setNextRequest(\"Ship\");",
+							"} else {",
+							"    console.log(\"Pack request failed\");",
+							"    pm.execution.setNextRequest(null);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-csrf-token",
+						"value": "{{x-csrf-token}}",
+						"type": "text"
+					},
+					{
+						"key": "moquisessiontoken",
+						"value": "{{moquisessiontoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"facilityId\": \"{{facilityId}}\",\n    \"orderId\": \"{{orderId}}\",\n    \"rejectedOrderItems\": [],\n    \"shipmentId\": \"{{shipmentId}}\",\n    \"shipmentPackageContents\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/shipments/{{shipmentId}}/pack",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"shipments",
+						"{{shipmentId}}",
+						"pack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ship",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.execution.setNextRequest(null);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "moquisessiontoken",
+						"value": "{{moquisessiontoken}}",
+						"type": "text"
+					},
+					{
+						"key": "x-csrf-token",
+						"value": "{{x-csrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/shipments/{{shipmentId}}/ship",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"shipments",
+						"{{shipmentId}}",
+						"ship"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
