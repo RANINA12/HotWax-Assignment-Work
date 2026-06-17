@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+
+<OrderHeaderNick orderId="ORD_NICK_1000" orderName="First Seed Order" orderTypeId="SALES_ORDER" statusId="ORDER_CREATED" entryDate="2024-05-26 10:00:00.000" orderDate="2024-05-26 10:00:00.000" grandTotal="50.00" productStoreId="MAIN_STORE"/>
+
+<OrderItemNick orderId="ORD_NICK_1000" orderItemSeqId="00001" quantity="2" statusId="ITEM_CREATED" productId="LAPTOP_VIRT" unitPrice="25.00" itemDescription="Custom Widget Line Item"/>
+
+<OrderRoleNick orderId="ORD_NICK_1000" partyId="1009" roleTypeId="CUSTOMER"/>
+
+<OrderContactMechNick orderId="ORD_NICK_1000" contactMechId="9001" contactMechPurposeTypeId="SHIPPING_LOCATION" orderItemSeqId="00001"/>
+
+<OrderPaymentPreferenceNick orderPaymentPreferenceId="OPP_NICK_1000" orderId="ORD_NICK_1000" paymentMethodTypeId="CREDIT_CARD" productPricePurposeId="PURCHASE"/>
+
+</entity-engine-xml>
