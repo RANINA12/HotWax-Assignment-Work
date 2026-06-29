@@ -1,7 +1,7 @@
-# Experiment Report: Empirical Testing of Moqui's Entity Iterator Memory Behavior on MySQL
+# Experiment Report: Testing of Moqui's Entity Iterator Memory Behavior on MySQL (on different scenarios)
 
 **Date:** June 26, 2026  
-**Context:** Verification of read-path safety for the sim-routing cross-database sync engine.  
+
 **Objective:** To empirically test whether Moqui's Entity Engine iterator (`ec.entity.find(...).iterator()`) streams rows from MySQL row-by-row, or whether it causes the driver to buffer the entire result set in the JVM heap, leading to memory exhaustion on large tables.
 
 ---
@@ -13,7 +13,7 @@
 
 ## 2. Methodology & Baseline Measurements
 
-To ensure accurate results, we bypassed Gradle (`./gradlew run`) and launched the compiled application directly using the `java` executable. This allowed strict control over the JVM arguments required for the Decisive Setup.
+To ensure accurate results, we bypassed Gradle (`./gradlew run`) and launched the compiled application directly using the `java` executable. This allowed strict control over the JVM arguments required for the Setup.
 
 ### 2.1 Establishing the constrained Memory Baseline
 After applying constraints, we measured the server's default maximum memory capacity using a Groovy shell script:
@@ -24,7 +24,7 @@ Output: 15:15:55.064 WARN o.moqui.i.c.LoggerFacadeImpl Max Memory: 256
 ```
 
 ### 2.2 Data Generation & Table Sizing
-We populated test_large_entity with over 8.3 million rows to ensure the table's physical size far exceeded our planned memory constraint.
+I populated test_large_entity with over 8.3 million rows to ensure the table's physical size far exceeded our planned memory constraint.
 
 ```sql
 SELECT table_name AS 'Table Name',
@@ -40,11 +40,11 @@ Observation: Setting a JVM heap limit of 256 MB would guarantee a crash if the f
 ---
 
 ## 3. Code-Verified Facts & Driver Documentation
-Before executing the trap, we verified the underlying framework logic and primary source documentation:
+Before executing, I also verified that the underlying framework logic and primary source documentation:
 
 **Cursor Type:** Confirmed in `EntityFindBase.groovy` that the default result set is `TYPE_FORWARD_ONLY` and `CONCUR_READ_ONLY`.
 
-**Fetch Size Guard:** Confirmed in `EntityFindBuilder.java` that the engine forces a positive fetch size:
+**Fetch Size:** Confirmed in `EntityFindBuilder.java` that the engine forces a positive fetch size:
 
 ```java
 if (fetchSize != null && fetchSize > 0) {
@@ -58,7 +58,7 @@ if (fetchSize != null && fetchSize > 0) {
 ## 4. The Experiment: Fair-Test Controls & Falsification
 
 ### 4.1 The Conditional Control Run (`useCursorFetch=true`)
-We first booted the server using Moqui's actual default `mysql8` profile, which implicitly injects `useCursorFetch=true` into the connection string under the hood. We executed the MemoryTest service against the 8.3 million row table.
+I first restart the server using Moqui's actual default `mysql8` profile, which implicitly injects `useCursorFetch=true` into the connection string under the hood. Executed the MemoryTest service against the 8.3 million row table.
 
 - **Time to Create Iterator:** 26108 ms
 - **Time to First Row:** 77 ms
