@@ -41,17 +41,11 @@ under the License.
 
 
 
-
-
-
-        <!-- ═══════════════════════════ REQUEST MAPS ═══════════════════════════ -->
-
         <request-map uri="main">
             <security https="true" auth="true"/>
             <response name="success" type="view" value="main"/>
         </request-map>
 
-        <!-- Order Header -->
         <request-map uri="orderHeader">
             <response name="success" type="view" value="CreateOrderHeader"/>
         </request-map>
@@ -61,7 +55,6 @@ under the License.
             <response name="error" type="view" value="CreateOrderHeader"/>
         </request-map>
 
-        <!-- Order Item -->
         <request-map uri="orderItem">
             <response name="success" type="view" value="CreateOrderItem"/>
         </request-map>
@@ -71,21 +64,17 @@ under the License.
             <response name="error" type="view" value="CreateOrderItem"/>
         </request-map>
 
-        <!-- Order Role -->
         <request-map uri="orderRole">
             <response name="success" type="view" value="CreateOrderRole"/>
         </request-map>
-        <!--
-            FIX — service invoke was "CreateOrderRoleNick" → corrected to "CreateOrderRole"
-                  (all other services follow the plain name convention; "Nick" suffix was a mistake)
-        -->
+   
         <request-map uri="createOrderRole">
             <event type="service" invoke="CreateOrderRole"/>
             <response name="success" type="request-redirect" value="orderRole"/>
             <response name="error" type="view" value="CreateOrderRole"/>
         </request-map>
 
-        <!-- Order Contact Mech -->
+  
         <request-map uri="orderContactMech">
             <response name="success" type="view" value="CreateOrderContactMech"/>
         </request-map>
@@ -95,7 +84,6 @@ under the License.
             <response name="error" type="view" value="CreateOrderContactMech"/>
         </request-map>
 
-        <!-- Order Payment Preference -->
         <request-map uri="orderPaymentPreference">
             <response name="success" type="view" value="CreateOrderPaymentPreference"/>
         </request-map>
@@ -105,7 +93,7 @@ under the License.
             <response name="error" type="view" value="CreateOrderPaymentPreference"/>
         </request-map>
 
-        <!-- Order Adjustment -->
+  
         <request-map uri="orderAdjustment">
             <response name="success" type="view" value="CreateOrderAdjustment"/>
         </request-map>
@@ -115,9 +103,7 @@ under the License.
             <response name="error" type="view" value="CreateOrderAdjustment"/>
         </request-map>
 
-        <!-- ════════════════════════════ VIEW MAPS ════════════════════════════ -->
-
-        <!-- FIX — "main" view-map was missing entirely -->
+      
         <view-map name="main" type="screen"
                   page="component://ordermgr/widget/OrdermgrScreens.xml#main"/>
 
