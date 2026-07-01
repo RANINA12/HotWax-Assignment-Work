@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+
+    <service verb="get" noun="A1Q01NewCustomers">
+        <out-parameters>
+            <parameter name="customerList" type="List"/>
+        </out-parameters>
+
+        <actions>
+            <script><![CDATA[
+               def dynamicFind = ec.entity.find("Party").makeEntityDynamicView()
+                dynamicFind.addMemberEntity("p" ,Party,null,null,null)
+                dynamicFind.addMemberEntity("pr" ,PartyRole,Party,true,["PartyId":PartyId])
+                dynamicFind.addMemberEntity("pp" ,Person,PartyRole,true,["PartyId" : PartyId])
+                dynamicFind.addMemberEntity("pcm" ,PartyContactMech,Person,true,["PartyId":PartyId])
+                dynamicFind.addMemberEntity("cm" ,ContactMech,PartyContactMech,true,["ContactMechID":ContactMechID])
+                dynamicFind.addMemberEntity("tn" , TelecomNumber , ContactMech , true , ["ContactMechID":ContactMechID])
+
+                      dynamicFind.addAlias("p", "partyId")
+                      dynamicFind.addAlias("pp", "firstName")
+                      dynamicFind.addAlias("pp", "lastName")
+                      dynamicFind.addAlias("cm", "infoString")
+                      dynamicFind.addAlias("tn", "contactNumber")
+                      dynamicFind.addAlias("pr", "roleTypeId")
+                dynamicFind.condition("roleTypeId", "Customer")
+<!--                dynamicFind.condition("createdStamp", org.moqui.entity.EntityCondition.GREATER_THAN_EQUAL_TO, "")-->
+<!--                dynamicFind.condition("createdStamp", org.moqui.entity.EntityCondition.LESS_THAN, "")-->
+                customerList = dynamicFind.list()
+            ]]></script>
+        </actions>
+    </service>
+
+</services>
+
