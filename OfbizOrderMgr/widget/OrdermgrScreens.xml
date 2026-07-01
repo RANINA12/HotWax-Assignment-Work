@@ -36,10 +36,6 @@ under the License.
         </section>
     </screen>
 
-    <!--
-        FIX A — headerItem: was "OrderHeader" → "Order"  (must match MainAppBar menu-item name)
-        FIX B — menu location: was component://productmgr/... → component://ordermgr/widget/OrdermgrMenus.xml
-    -->
     <screen name="CreateOrderHeader">
         <section>
             <actions>
@@ -58,10 +54,6 @@ under the License.
         </section>
     </screen>
 
-    <!--
-        FIX A — headerItem: was "OrderItem" → "Order"
-        FIX B — menu location fixed
-    -->
     <screen name="CreateOrderItem">
         <section>
             <actions>
@@ -80,10 +72,6 @@ under the License.
         </section>
     </screen>
 
-    <!--
-        FIX A — headerItem: was "OrderPayment" → already correct (MainAppBar item = "OrderPayment")
-        FIX B — menu location fixed
-    -->
     <screen name="CreateOrderPaymentPreference">
         <section>
             <actions>
@@ -102,10 +90,6 @@ under the License.
         </section>
     </screen>
 
-    <!--
-        FIX A — headerItem: was "OrderAdjustment" → "OrderPayment"
-        FIX B — menu location fixed
-    -->
     <screen name="CreateOrderAdjustment">
         <section>
             <actions>
@@ -124,10 +108,6 @@ under the License.
         </section>
     </screen>
 
-    <!--
-        FIX A — headerItem: was "OrderRole" → "OrderRelation"
-        FIX B — menu location fixed
-    -->
     <screen name="CreateOrderRole">
         <section>
             <actions>
@@ -146,10 +126,6 @@ under the License.
         </section>
     </screen>
 
-    <!--
-        FIX A — headerItem: was "OrderMech" → "OrderRelation"
-        FIX B — menu location fixed
-    -->
     <screen name="CreateOrderContactMech">
         <section>
             <actions>
