@@ -1,3 +1,7 @@
+# SQL Queries Reference
+
+---
+
 ## Query 1 — New Customers Acquired in June 2023
 
 Business Problem:
@@ -19,6 +23,7 @@ LEFT JOIN telecom_number tn ON cm.contact_mech_id = tn.contact_mech_id
 WHERE pr.role_type_id = "CUSTOMER"
   AND p.created_stamp BETWEEN "2023-06-01" AND "2023-07-01";
 ```
+(cost=12.6 rows=3.03) (actual time=0.395..0.395 rows=0 loops=1)
 
 ---
 
@@ -40,6 +45,8 @@ WHERE (SALES_DISCONTINUATION_DATE IS NULL OR SALES_DISCONTINUATION_DATE > NOW())
       WHERE is_physical = "N"
   );
 ```
+(cost=11.8 rows=84.8) (actual time=8.61..11.2 rows=91 loops=1)
+Here If I gonna use IN method , then Cost increase to 21.8
 
 ---
 
@@ -54,22 +61,20 @@ SELECT
     p.Internal_name,
     p.product_type_id,
     gi.good_identification_type_id
-FROM product p
-LEFT JOIN good_identification gi
+FROM good_identification gi
+RIGHT JOIN product p 
     ON p.product_id = gi.product_id
     AND gi.good_identification_type_id = 'ERP_ID'
 WHERE p.product_type_id = 'FINISHED_GOOD'
   AND gi.id_value IS NULL;
 ```
-
+(cost=127 rows=91) (actual time=0.121..0.814 rows=91 loops=1
 ---
 
 ## Query 4 — Product IDs Across Systems
 
 Business Problem:
 To sync an order or product across multiple systems (e.g., Shopify, HotWax, ERP/NetSuite), the OMS needs to know each system’s unique identifier for that product. This query retrieves the Shopify ID, HotWax ID, and ERP ID (NetSuite ID) for all products.
-
-
 
 ```sql
 SELECT
@@ -84,6 +89,7 @@ FROM product p
 LEFT JOIN good_Identification GI ON GI.product_id = p.product_id
 WHERE product_type_id = "FINISHED_GOOD";
 ```
+(cost=41.8 rows=92.8) (actual time=0.0695..0.533 rows=91 loops=1)
 
 ---
 
@@ -109,21 +115,21 @@ SELECT
     OI.SHIP_GROUP_SEQ_ID 
 FROM 
     ORDER_ITEM OI 
-LEFT JOIN 
+JOIN 
     PRODUCT p 
     ON p.PRODUCT_ID = OI.PRODUCT_ID 
-LEFT JOIN 
+JOIN 
     ORDER_ITEM_SHIP_GROUP oisg  
     ON OI.ORDER_ID = oisg.ORDER_ID 
     AND OI.SHIP_GROUP_SEQ_ID = oisg.SHIP_GROUP_SEQ_ID
-LEFT JOIN 
+JOIN 
     FACILITY f 
     ON f.FACILITY_ID = oisg.FACILITY_ID 
     AND oisg.FACILITY_ID <> '_NA_'
-LEFT JOIN 
+JOIN 
     PRODUCT_STORE_CATALOG psc 
     ON OI.PROD_CATALOG_ID = psc.PROD_CATALOG_ID
-LEFT JOIN 
+JOIN 
     ORDER_HISTORY ohis 
     ON ohis.ORDER_ID = OI.ORDER_ID 
     AND ohis.ORDER_ITEM_SEQ_ID = OI.ORDER_ITEM_SEQ_ID 
@@ -132,10 +138,12 @@ JOIN
     ON os.ORDER_ID = OI.ORDER_ID 
     AND os.ORDER_ITEM_SEQ_ID = OI.ORDER_ITEM_SEQ_ID 
 WHERE 
-    os.STATUS_ID = 'ITEM_COMPLETED' 
+    os.STATUS_ID = 'ORDER_COMPLETED' 
     AND os.STATUS_DATETIME >= '2023-08-01' 
     AND os.STATUS_DATETIME <= '2023-09-01';
 ```
+With left Join  (cost=1.66 rows=0.111) (actual time=0.434..0.434 rows=0 loops=1)
+Without left Join  (cost=0.526 rows=0.00123) (actual time=0.0633..0.0633 rows=0 loops=1)
 
 ---
 
@@ -151,8 +159,9 @@ SELECT
     OPP.order_id,
     OPP.MAX_Amount,
     OH.External_iD
-FROM ORDER_PAYMENT_PREFERENCE OPP
-LEFT JOIN ORDER_HEADER OH ON OH.ORDER_ID = OPP.ORDER_ID
+FROM ORDER_HEADER OH 
+JOIN ORDER_PAYMENT_PREFERENCE OPP 
+ON OH.ORDER_ID = OPP.ORDER_ID
 ORDER BY OPP.ORDER_ID;
 ```
 
@@ -170,7 +179,7 @@ SELECT
     OPP.STATUS_ID AS PAYMENT_STATUS,
     "NO_SHIPMENT_YET" AS SHIPMENT_STATUS
 FROM ORDER_PAYMENT_PREFERENCE OPP
-LEFT JOIN ORDER_HEADER OH ON OH.ORDER_ID = OPP.ORDER_ID
+JOIN ORDER_HEADER OH ON OH.ORDER_ID = OPP.ORDER_ID
 LEFT JOIN SHIPMENT S ON S.PRIMARY_ORDER_ID = OPP.ORDER_ID
 WHERE OPP.STATUS_ID = "PAYMENT_SETTLED"
   AND S.SHIPMENT_ID IS NULL;
@@ -226,6 +235,7 @@ JOIN ORDER_STATUS OS
     AND OS.STATUS_DATETIME <= '2026-06-01';
 
 ```
+(cost=1.28 rows=0) (actual time=0.0468..0.0468 rows=0 loops=1)
 
 ---
 
@@ -245,6 +255,7 @@ WHERE STATUS_ID = "ITEM_CANCELLED"
 GROUP BY Change_Reason;
 
 ```
+(cost=0.261 rows=0.111) (actual time=0.0262..0.0262 rows=0 loops=1)
 
 ---
 
@@ -259,5 +270,5 @@ SELECT
 FROM product_facility
 GROUP BY product_id;
 ```
-
+(cost=1.2 rows=2) (actual time=9.31..9.31 rows=2 loops=1)
 ---
