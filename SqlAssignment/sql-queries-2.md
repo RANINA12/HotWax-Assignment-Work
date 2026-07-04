@@ -131,6 +131,7 @@ JOIN FACILITY F ON F.FACILITY_ID = PF.FACILITY_ID
 GROUP BY PF.FACILITY_ID;
 ```
 (cost=7.76 rows=6.07) (actual time=2.83..2.89 rows=4 loops=1)
+
 ---
 
 ## Query 16 — Lost and Damaged Inventory
@@ -151,6 +152,7 @@ HAVING IID.Reason_Enum_Id = "VAR_DAMAGED"
     OR IID.REASON_ENUM_ID = "VAR_LOST";
 ```
 (cost=2.7 rows=6) (actual time=15.2..15.2 rows=6 loops=1)
+
 ---
 
 ## Query 17 — Low Stock or Out of Stock Items Report
@@ -176,6 +178,7 @@ WHERE COALESCE(II.AVAILABLE_TO_PROMISE, 0) < COALESCE(PF.MINIMUM_STOCK, 0)
    OR COALESCE(II.AVAILABLE_TO_PROMISE, 0) <= 0;
 ```
 (cost=1.5 rows=1) (actual time=0.0926..0.0977 rows=1 loops=1)
+
 ---
 
 ## Query 18 — Retrieve the Current Facility (Physical or Virtual) of Open Orders
@@ -200,6 +203,7 @@ WHERE OH.STATUS_ID <> "ORDER_COMPLETED"
   AND OH.STATUS_ID <> "ORDER_CANCELLED";
 ```
 (cost=35.7..38 rows=9.58) (actual time=1.13..1.14 rows=44 loops=1)
+
 ---
 
 ## Query 19 — Items Where QOH and ATP Differ
@@ -217,6 +221,7 @@ SELECT
 FROM Inventory_Item;
 ```
 (cost=0.35 rows=1) (actual time=0.0379..0.0435 rows=1 loops=1)
+
 ---
 
 ## Query 20 — Order Item Current Status Changed Date-Time
@@ -238,6 +243,7 @@ WHERE OS1.STATUS_ID = "ITEM_APPROVED"
   AND OS2.STATUS_ID = "ITEM_COMPLETED";
 ```
 (cost=2.2 rows=0.05) (actual time=0.0249..0.0249 rows=0 loops=1)
+
 ---
 
 ## Query 21 — Total Orders by Sales Channel
@@ -262,4 +268,5 @@ WHERE OH.status_id = "Order_completed"
 GROUP BY OH.sales_channel_enum_id;
 ```
 (cost=2.25 rows=14) (actual time=0.434..0.436 rows=1 loops=1)
+
 ---
