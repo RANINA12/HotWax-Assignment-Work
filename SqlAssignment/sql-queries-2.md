@@ -16,24 +16,20 @@ SELECT
     OH.STATUS_ID,
     OH.ORDER_DATE
 FROM ORDER_HEADER OH
-LEFT JOIN ORDER_ROLE ORR
+JOIN ORDER_ROLE ORR
     ON OH.ORDER_ID = ORR.ORDER_ID
     AND ORR.ROLE_TYPE_ID = 'SHIP_TO_CUSTOMER'
-LEFT JOIN ORDER_CONTACT_MECH OCM
+JOIN ORDER_CONTACT_MECH OCM
     ON OH.ORDER_ID = OCM.ORDER_ID
     AND OCM.CONTACT_MECH_PURPOSE_TYPE_ID = 'SHIPPING_LOCATION'
-LEFT JOIN POSTAL_ADDRESS PA ON PA.CONTACT_MECH_ID = OCM.CONTACT_MECH_ID
+JOIN POSTAL_ADDRESS PA ON PA.CONTACT_MECH_ID = OCM.CONTACT_MECH_ID
 LEFT JOIN PERSON P ON P.PARTY_ID = ORR.PARTY_ID
 WHERE (
     OH.ORDER_DATE >= '2023-10-01'
     AND OH.ORDER_DATE < '2023-11-01'
 )
-OR (
-    OH.STATUS_ID = 'ORDER_COMPLETED'
-    AND OH.LAST_UPDATED_STAMP >= '2023-10-01'
-    AND OH.LAST_UPDATED_STAMP < '2023-11-01'
-);
 ```
+(cost=16.2 rows=3) (actual time=0.0899..0.0899 rows=0 loops=1)
 
 ---
 
@@ -55,17 +51,18 @@ SELECT
     OH.STATUS_ID,
     OH.ORDER_DATE
 FROM ORDER_HEADER OH
-LEFT JOIN ORDER_ROLE ORR
+JOIN ORDER_ROLE ORR
     ON OH.ORDER_ID = ORR.ORDER_ID
     AND ORR.ROLE_TYPE_ID = 'SHIP_TO_CUSTOMER'
-LEFT JOIN ORDER_CONTACT_MECH OCM
+JOIN ORDER_CONTACT_MECH OCM
     ON OH.ORDER_ID = OCM.ORDER_ID
     AND OCM.CONTACT_MECH_PURPOSE_TYPE_ID = 'SHIPPING_LOCATION'
-LEFT JOIN POSTAL_ADDRESS PA ON PA.CONTACT_MECH_ID = OCM.CONTACT_MECH_ID
-LEFT JOIN PERSON P ON P.PARTY_ID = ORR.PARTY_ID
+JOIN POSTAL_ADDRESS PA ON PA.CONTACT_MECH_ID = OCM.CONTACT_MECH_ID
+JOIN PERSON P ON P.PARTY_ID = ORR.PARTY_ID
 WHERE OH.STATUS_ID = 'ORDER_COMPLETED'
   AND PA.STATE_PROVINCE_GEO_ID = 'NY';
 ```
+(cost=1.57 rows=0.784) (actual time=0.0826..0.0826 rows=0 loops=1)
 
 ---
 
@@ -84,9 +81,9 @@ WITH product_sales AS (
         SUM(OI.QUANTITY) AS quantity,
         SUM(OI.QUANTITY * OI.UNIT_PRICE) AS revenue
     FROM ORDER_HEADER OH
-    LEFT JOIN ORDER_ITEM OI ON OH.ORDER_ID = OI.ORDER_ID
-    LEFT JOIN PRODUCT P ON P.PRODUCT_ID = OI.PRODUCT_ID
-    LEFT JOIN ORDER_ROLE ORR
+    JOIN ORDER_ITEM OI ON OH.ORDER_ID = OI.ORDER_ID
+    JOIN PRODUCT P ON P.PRODUCT_ID = OI.PRODUCT_ID
+    JOIN ORDER_ROLE ORR
         ON OH.ORDER_ID = ORR.ORDER_ID
         AND ORR.ROLE_TYPE_ID = 'SHIP_TO_CUSTOMER'
     LEFT JOIN ORDER_CONTACT_MECH OCM
@@ -106,7 +103,9 @@ FROM (
     FROM product_sales
 ) t
 WHERE rn = 1;
+
 ```
+(cost=0.35..0.35 rows=1) (actual time=1.41..1.41 rows=3 loops=1)
 
 ---
 
@@ -131,7 +130,7 @@ JOIN PRODUCT_FACILITY PF ON PF.PRODUCT_ID = OI.PRODUCT_ID
 JOIN FACILITY F ON F.FACILITY_ID = PF.FACILITY_ID
 GROUP BY PF.FACILITY_ID;
 ```
-
+(cost=7.76 rows=6.07) (actual time=2.83..2.89 rows=4 loops=1)
 ---
 
 ## Query 16 — Lost and Damaged Inventory
@@ -146,18 +145,17 @@ SELECT
     SUM(IID.QUANTITY_ON_HAND_DIFF),
     IID.REASON_ENUM_ID
 FROM INVENTORY_ITEM_DETAIL IID
-LEFT JOIN INVENTORY_ITEM II ON II.INVENTORY_ITEM_ID = IID.INVENTORY_ITEM_ID
+JOIN INVENTORY_ITEM II ON II.INVENTORY_ITEM_ID = IID.INVENTORY_ITEM_ID
 GROUP BY IID.INVENTORY_ITEM_ID, IID.REASON_ENUM_ID
 HAVING IID.Reason_Enum_Id = "VAR_DAMAGED"
     OR IID.REASON_ENUM_ID = "VAR_LOST";
 ```
-
+(cost=2.7 rows=6) (actual time=15.2..15.2 rows=6 loops=1)
 ---
 
 ## Query 17 — Low Stock or Out of Stock Items Report
 
-Business Problem:
-Avoiding out-of-stock situations is critical. This report flags items that have fallen below a certain reorder threshold or have zero available stock.
+Business Problem: Avoiding out-of-stock situations is critical. This report flags items that have fallen below a certain reorder threshold or have zero available stock.
 
 ```sql
 SELECT
@@ -169,14 +167,15 @@ SELECT
     COALESCE(PF.MINIMUM_STOCK, 0) AS REORDER_THRESHOLD,
     CURRENT_TIMESTAMP AS DATE_CHECKED
 FROM PRODUCT_FACILITY PF
-JOIN PRODUCT P ON PF.PRODUCT_ID = P.PRODUCT_ID
-LEFT JOIN INVENTORY_ITEM II
+JOIN PRODUCT P 
+    ON PF.PRODUCT_ID = P.PRODUCT_ID
+JOIN INVENTORY_ITEM II
     ON II.PRODUCT_ID = PF.PRODUCT_ID
     AND II.FACILITY_ID = PF.FACILITY_ID
 WHERE COALESCE(II.AVAILABLE_TO_PROMISE, 0) < COALESCE(PF.MINIMUM_STOCK, 0)
    OR COALESCE(II.AVAILABLE_TO_PROMISE, 0) <= 0;
 ```
-
+(cost=1.5 rows=1) (actual time=0.0926..0.0977 rows=1 loops=1)
 ---
 
 ## Query 18 — Retrieve the Current Facility (Physical or Virtual) of Open Orders
@@ -191,16 +190,16 @@ SELECT DISTINCT
     F.FACILITY_ID,
     OH.STATUS_ID AS ORDER_STATUS,
     OH.ORDER_ID
-FROM ORDER_ITEM OI
-INNER JOIN ORDER_HEADER OH ON OH.ORDER_ID = OI.ORDER_ID
-LEFT JOIN ORDER_ITEM_SHIP_GROUP OISG
+FROM ORDER_HEADER OH
+JOIN ORDER_ITEM OI ON OH.ORDER_ID = OI.ORDER_ID
+JOIN ORDER_ITEM_SHIP_GROUP OISG
     ON OISG.ORDER_ID = OI.ORDER_ID
     AND OISG.SHIP_GROUP_SEQ_ID = OI.SHIP_GROUP_SEQ_ID
-LEFT JOIN FACILITY F ON OISG.FACILITY_ID = F.FACILITY_ID
+JOIN FACILITY F ON OISG.FACILITY_ID = F.FACILITY_ID
 WHERE OH.STATUS_ID <> "ORDER_COMPLETED"
   AND OH.STATUS_ID <> "ORDER_CANCELLED";
 ```
-
+(cost=35.7..38 rows=9.58) (actual time=1.13..1.14 rows=44 loops=1)
 ---
 
 ## Query 19 — Items Where QOH and ATP Differ
@@ -217,11 +216,10 @@ SELECT
     Quantity_on_Hand_Total - Available_to_promise_total AS Difference
 FROM Inventory_Item;
 ```
-
+(cost=0.35 rows=1) (actual time=0.0379..0.0435 rows=1 loops=1)
 ---
 
 ## Query 20 — Order Item Current Status Changed Date-Time
-
 Business Problem:
 Operations teams need to audit when an order item’s status (e.g., from “Pending” to “Shipped”) was last changed, for shipment tracking or dispute resolution.
 
@@ -239,11 +237,10 @@ JOIN order_status OS2
 WHERE OS1.STATUS_ID = "ITEM_APPROVED"
   AND OS2.STATUS_ID = "ITEM_COMPLETED";
 ```
-
+(cost=2.2 rows=0.05) (actual time=0.0249..0.0249 rows=0 loops=1)
 ---
 
 ## Query 21 — Total Orders by Sales Channel
-
 Business Problem:
 Marketing and sales teams want to see how many orders come from each channel (e.g., web, mobile app, in-store POS, marketplace) to allocate resources effectively.
 
@@ -264,5 +261,5 @@ LEFT JOIN (
 WHERE OH.status_id = "Order_completed"
 GROUP BY OH.sales_channel_enum_id;
 ```
-
+(cost=2.25 rows=14) (actual time=0.434..0.436 rows=1 loops=1)
 ---
