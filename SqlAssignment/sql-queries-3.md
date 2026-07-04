@@ -15,19 +15,23 @@ SELECT
     oh.STATUS_ID,
     oh.ORDER_TYPE_ID,
     oh.PRODUCT_STORE_ID,
-    os.status_datetime
-FROM order_header oh
-JOIN order_item oi ON oh.order_id = oi.order_id
-JOIN order_status os ON os.order_id = oi.order_id AND os.order_item_Seq_id = oi.order_item_seq_id 
-LEFT JOIN product p ON p.product_id = oi.product_id
+    os.STATUS_DATETIME
+FROM ORDER_HEADER oh
+JOIN ORDER_ITEM oi 
+ON oh.ORDER_ID = oi.ORDER_ID
+JOIN PRODUCT p 
+ON p.PRODUCT_ID = oi.PRODUCT_ID
+JOIN ORDER_STATUS os 
+ON os.ORDER_ID = oi.ORDER_ID
 WHERE p.product_type_id IN (
     SELECT product_type_id
     FROM product_type
     WHERE is_physical = "y"
 )
-AND oh.status_id = "order_completed"
-
+AND oi.status_id = "ORDER_COMPLETED";
 ```
+(cost=2.73 rows=0.291) (actual time=0.0372..0.0372 rows=0 loops=1)
+
 ---
 
 ## Query 23 — Completed Return Items
@@ -36,23 +40,25 @@ Business Problem:
 Customer service and finance often need insights into returned items to manage refunds, replacements, and inventory restocking.
 
 ```sql
-SELECT
-    p.party_id,
-    RI.order_id,
-    p.First_name,
-    p.last_name
-FROM Return_Header RH
-JOIN (
-    SELECT
-        Return_id,
-        order_id
-    FROM return_item
-    GROUP BY order_id
-    HAVING COUNT(order_id) = 1
-) RI ON RI.return_id = RH.return_id
-LEFT JOIN Person p ON p.party_id = RH.from_party_id
-WHERE RH.RETURN_DATE >= '2026-05-01' AND RETURN_DATE <= '2026-06-01'
+SELECT 
+    RI.RETURN_ID ,
+    OH.ORDER_ID,
+    OH.PRODUCT_STORE_ID,
+    RS.STATUS_DATETIME,
+    RH.FROM_PARTY_ID,
+    RH.RETURN_DATE,
+    RH.ENTRY_DATE,
+    RH.RETURN_CHANNEL_ENUM_ID
+FROM RETURN_ITEM RI 
+JOIN RETURN_HEADER RH
+ON RI.RETURN_ID = RH.RETURN_ID
+JOIN RETURN_STATUS RS 
+ON RS.RETURN_ID = RI.RETURN_ID AND RS.RETURN_ITEM_SEQ_ID = RI.RETURN_ITEM_SEQ_ID
+JOIN ORDER_HEADER OH 
+ON OH.ORDER_ID = RI.ORDER_ID
+WHERE RS.STATUS_ID = "RETURN_COMPLETED";
 ```
+(cost=1.75 rows=1) (actual time=0.122..0.13 rows=1 loops=1)
 
 ---
 
@@ -73,11 +79,12 @@ JOIN (
         Return_id,
         order_id
     FROM return_item
-    GROUP BY order_id
+    GROUP BY order_id , Return_id
     HAVING COUNT(order_id) = 1
 ) RI ON RI.return_id = RH.return_id
 LEFT JOIN Person p ON p.party_id = RH.from_party_id;
 ```
+(cost=2.05 rows=1) (actual time=0.143..0.148 rows=1 loops=1)
 
 ---
 
@@ -89,16 +96,12 @@ The retailer needs the total amount of items, were returned as well as how many 
 ```sql
 SELECT
     COUNT(RI.return_id) AS total_return,
-    SUM(
-        CASE
-            WHEN RA.return_adjustment_type_id = 'Appeasement' THEN 1
-            ELSE 0
-        END
-    ) AS appeasement_count
+    COUNT(RA.RETURN_TYPE_ID)
+    AS appeasement_count
 FROM RETURN_ITEM RI
-JOIN RETURN_ADJUSTMENT RA ON RI.return_id = RA.return_id
-GROUP BY RA.return_adjustment_id;
+LEFT JOIN RETURN_ADJUSTMENT RA ON RI.return_id = RA.return_id and RA.RETURN_TYPE_ID="Appeasement"
 ```
+(cost=2.3 rows=1) (actual time=4.69..4.69 rows=1 loops=1)
 
 ---
 
@@ -120,9 +123,10 @@ SELECT
     OH.PRODUCT_STORE_ID
 FROM RETURN_HEADER RH
 JOIN RETURN_ITEM RI ON RH.RETURN_ID = RI.RETURN_ID
-LEFT JOIN ORDER_HEADER OH ON RI.ORDER_ID = OH.ORDER_ID
+JOIN ORDER_HEADER OH ON RI.ORDER_ID = OH.ORDER_ID
 LEFT JOIN RETURN_ADJUSTMENT RA ON RA.RETURN_ID = RI.RETURN_ID;
 ```
+(cost=2.15 rows=1) (actual time=0.101..0.108 rows=1 loops=1)
 
 ---
 
@@ -145,15 +149,16 @@ JOIN (
     GROUP BY ORDER_ID
     HAVING COUNT(DISTINCT RETURN_ID) >= 2
 ) AS FO ON FO.ORDER_ID = RI.ORDER_ID
-LEFT JOIN RETURN_HEADER RH ON RH.RETURN_ID = RI.RETURN_ID;
+JOIN RETURN_HEADER RH ON RH.RETURN_ID = RI.RETURN_ID;
 ```
+(cost=3.91..3.91 rows=1) (actual time=0.167..0.167 rows=0 loops=1)
 
 ---
 
 ## Query 28 — Store with Most One-Day Shipped Orders (Last Month)
 
 Business Problem:
-Identify which facility (store) handled the highest volume of “one-day shipping” orders in the previous month, useful for operational benchmarking.
+Identify which facility (store) handled the highest volume of “one-day shipping” orders in the previous month, useful for operational benchmarking
 
 ```sql
 SELECT
@@ -179,6 +184,7 @@ WHERE OIS.SHIPMENT_METHOD_TYPE_ID = 'NEXT_DAY'
   AND OS.STATUS_DATETIME >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
 GROUP BY OIS.FACILITY_ID, F.FACILITY_NAME;
 ```
+(cost=1.71 rows=0.0025) (actual time=0.0278..0.0278 rows=0 loops=1)
 
 ---
 
@@ -202,6 +208,7 @@ LEFT JOIN FACILITY_PARTY FP
     ON FP.PARTY_ID = P.PARTY_ID
     AND FP.ROLE_TYPE_ID = 'WAREHOUSE_PICKER';
 ```
+(cost=2.9 rows=1) (actual time=0.0371..0.0371 rows=0 loops=1)
 
 ---
 
@@ -219,9 +226,10 @@ FROM PRODUCT P
 JOIN PRODUCT_PRICE PP
     ON PP.PRODUCT_ID = P.PRODUCT_ID
     AND PP.PRODUCT_PRICE_TYPE_ID = 'LIST_PRICE'
-LEFT JOIN PRODUCT_FACILITY PF ON PF.PRODUCT_ID = P.PRODUCT_ID
+JOIN PRODUCT_FACILITY PF ON PF.PRODUCT_ID = P.PRODUCT_ID
 GROUP BY PF.PRODUCT_ID;
 ```
+(cost=2.36 rows=2) (actual time=0.0333..0.0333 rows=0 loops=1)
 
 ---
 
@@ -248,6 +256,7 @@ WHERE F.FACILITY_TYPE_ID NOT IN (
     WHERE PARENT_TYPE_ID = 'VIRTUAL_FACILITY'
 );
 ```
+(cost=0.626 rows=2) (actual time=8.55..8.58 rows=2 loops=1)
 
 ---
 
@@ -255,7 +264,6 @@ WHERE F.FACILITY_TYPE_ID NOT IN (
 
 Business Problem:
 When transferring stock between facilities, the system should reserve inventory. If it isn’t reserved, the transfer may fail or oversell.
-Business Problem:
 
 ```sql
 SELECT
@@ -279,6 +287,7 @@ WHERE OH.ORDER_TYPE_ID = 'TRANSFER_ORDER'
   AND OH.STATUS_ID = 'ORDER_APPROVED'
 ORDER BY OH.ORDER_ID;
 ```
+(cost=0.63 rows=2.13) (actual time=0.341..0.352 rows=1 loops=1)
 
 ---
 
@@ -307,3 +316,4 @@ WHERE S.SHIPMENT_ID IS NULL
   )
 ORDER BY DURATION_IN_DAYS DESC;
 ```
+cost=5.82..7.18 rows=2.18) (actual time=0.933..0.933 rows=1 loops=1)
