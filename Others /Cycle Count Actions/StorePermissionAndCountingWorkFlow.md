@@ -1,4 +1,6 @@
-Counting and permission Workflow 
+## Counting and permission Workflow 
+
+### Permissions
 
 ```
 Store Permissions
@@ -29,7 +31,7 @@ Store Permissions
         └── Estimate Counting Workload
 ```
 
-Counting WorkFlow
+### Counting WorkFlow
 
 ```
 Counting Workflow
@@ -87,7 +89,7 @@ Counting Workflow
     
  ```
  
- variance Workflow
+ ### variance Workflow
  
  ```
 Variance Workflow
