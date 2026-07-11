@@ -43,6 +43,8 @@
     "statusId": "ITEM_CREATED",
     "unitPrice": 0
   }
+
+```
   
   ```
   
@@ -98,7 +100,7 @@
     "statusUserLogin": "nikunj.bisani"
   }
   
-    ```
+  ```
   
   ```
   {
@@ -110,7 +112,7 @@
     "statusUserLogin": "nikunj.bisani"
   }
   
-    ```
+   ```
   
   ```
   
@@ -124,7 +126,7 @@
     "reservedDatetime": 1783741184000
   }
   
-    ```
+  ```
   
   ```
   
@@ -137,7 +139,7 @@
     "orderItemSeqId": "00001"
   }
   
-    ```
+  ```
   
   ```
   
@@ -156,7 +158,7 @@
     "destinationContactMechId": "10011"
   }
   
-    ```
+  ```
   
   ```
   
@@ -168,7 +170,7 @@
     "quantity": 25
   }
   
-    ```
+  ```
   
   ```
   
@@ -186,7 +188,7 @@
     "weightUomId": "WT_lb"
   }
   
-    ```
+  ```
   
   ```
   {
@@ -197,7 +199,7 @@
     "trackingId": "1233456"
   }
   
-    ```
+  ```
   
   ```
   
@@ -214,7 +216,8 @@
     "carrierServiceStatusId": "SHRSCS_ACCEPTED",
     "trackingId": "1233456"
   }
-    ```
+
+```
   
   ```
   {
@@ -222,7 +225,7 @@
     "shipmentId": "S1000",
     "statusId": "SHIPMENT_SHIPPED"
   }
-    ```
+  ```
   
   ```
   {
@@ -232,7 +235,7 @@
     "statusId": "ITEM_PENDING_RECEIPT"
   }
   
- ```
+  ```
   
   ```
   {
@@ -242,7 +245,7 @@
     "statusId": "ITEM_PENDING_RECEIPT",
     "statusDatetime": 1783741188000
   }
-    ```
+  ```
   
   ```
   {
@@ -253,7 +256,7 @@
     "orderId": "M0112",
     "orderItemSeqId": "00001"
   }
-    ```
+  ```
   
   ```
   {
@@ -268,7 +271,7 @@
     "issuedDateTime": 1783741190000
   }
   
-    ```
+  ```
   
   ```
   
@@ -288,7 +291,7 @@
     "quantityRejected": 0
   }
   
-    ```
+   ```
   
   ```
   
@@ -299,7 +302,7 @@
     "statusId": "ITEM_COMPLETED"
   }
   
-    ```
+  ```
   
   ```
   
@@ -309,7 +312,7 @@
     "statusId": "ORDER_COMPLETED"
   }
   
-    ```
+  ```
   
   ```
   
@@ -320,7 +323,7 @@
     "statusDatetime": 1783741192000
   }
   
-    ```
+  ```
   
   ```
   
