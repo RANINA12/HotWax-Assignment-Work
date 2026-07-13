@@ -335,4 +335,55 @@
     "statusDatetime": 1783741192000
   }
   ```
+  
+// Here is the Cancel  when single Item in created Status
  
+ ```
+  {
+    "_entity: : "OrderItem" ,
+    "statusId" : "ITEM_CANCELLED"
+  }   
+ ```
+
+// Here is the Remove single Item in Approved Status
+
+ ```
+ {
+ "_entity" : "OrderItem" ,
+ "statusId" : "ITEM_CANCELLED"
+ "cancelQunatity" : "To?"
+ }
+ 
+ ```
+
+// Here is the cancel of the Order (created Status)
+ ``` 
+ {
+ "_entity" : "OrderItem" ,
+ "statusId" : "ITEM_CANCELLED"
+ }
+ ```
+ ```
+ {
+ "_entity" : "OrderHeader" ,
+ "statusId" : "ORDER_CANCELLED"
+ }
+ ```
+
+// Here is the Order close Fullfillment  in Approved status 
+
+ ``` 
+ {
+ "_entity" : "OrderItem" ,
+ "statusId" : "ITEM_CANCELLED"
+ "cancelQuantity" : "calculate ?"
+ }
+ ```
+ 
+ ```
+ {
+ "_entity" : "OrderHeader" ,
+ "statusId" : "ORDER_CANCELLED"
+ "GrandTotal" : "Calc()"
+ }
+ ```
