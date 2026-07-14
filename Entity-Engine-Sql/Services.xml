@@ -9,27 +9,950 @@
 
         <actions>
             <script><![CDATA[
-               def dynamicFind = ec.entity.find("Party").makeEntityDynamicView()
-                dynamicFind.addMemberEntity("p" ,Party,null,null,null)
-                dynamicFind.addMemberEntity("pr" ,PartyRole,Party,true,["PartyId":PartyId])
-                dynamicFind.addMemberEntity("pp" ,Person,PartyRole,true,["PartyId" : PartyId])
-                dynamicFind.addMemberEntity("pcm" ,PartyContactMech,Person,true,["PartyId":PartyId])
-                dynamicFind.addMemberEntity("cm" ,ContactMech,PartyContactMech,true,["ContactMechID":ContactMechID])
-                dynamicFind.addMemberEntity("tn" , TelecomNumber , ContactMech , true , ["ContactMechID":ContactMechID])
+     def ef = ec.entity.find("Party")
+def dv = ef.makeEntityDynamicView()
 
-                      dynamicFind.addAlias("p", "partyId")
-                      dynamicFind.addAlias("pp", "firstName")
-                      dynamicFind.addAlias("pp", "lastName")
-                      dynamicFind.addAlias("cm", "infoString")
-                      dynamicFind.addAlias("tn", "contactNumber")
-                      dynamicFind.addAlias("pr", "roleTypeId")
-                dynamicFind.condition("roleTypeId", "Customer")
-<!--                dynamicFind.condition("createdStamp", org.moqui.entity.EntityCondition.GREATER_THAN_EQUAL_TO, "")-->
-<!--                dynamicFind.condition("createdStamp", org.moqui.entity.EntityCondition.LESS_THAN, "")-->
-                customerList = dynamicFind.list()
+dv.addMemberEntity("p", "Party", null, null, null)
+dv.addMemberEntity("pr", "PartyRole", "p", true, ["partyId":"partyId"])
+dv.addMemberEntity("pp", "Person", "pr", true, ["partyId":"partyId"])
+dv.addMemberEntity("pcm", "PartyContactMech", "pp", true, ["partyId":"partyId"])
+dv.addMemberEntity("cm", "ContactMech", "pcm", true, ["contactMechId":"contactMechId"])
+dv.addMemberEntity("tn", "TelecomNumber", "cm", true, ["contactMechId":"contactMechId"])
+
+dv.addAlias("p", "partyId")
+dv.addAlias("pp", "firstName")
+dv.addAlias("pp", "lastName")
+dv.addAlias("cm", "infoString")
+dv.addAlias("tn", "contactNumber")
+dv.addAlias("pr", "roleTypeId")
+
+customerList = ef
+        .condition("roleTypeId", "CUSTOMER")
+        .list()
+                ec.logger.info("Retrieved customerList: ${customerList}")
             ]]></script>
         </actions>
     </service>
 
-</services>
+    <service verb="get" noun="A1Q02Products" >
+         <out-parameters>
+             <parameter name="productList" type="List"/>
+         </out-parameters>
+        <actions>
+            <script><![CDATA[
+                def ef = ec.entity.find("org.apache.ofbiz.product.product.Product")
+                def dynamicView = ef.makeEntityDynamicView()
 
+                dynamicView.addMemberEntity("p", "org.apache.ofbiz.product.product.Product", null, null, null)
+                dynamicView.addMemberEntity("pt", "org.apache.ofbiz.product.product.ProductType", "p", true, ["productTypeId":"productTypeId"])
+
+                dynamicView.addAlias("p", "productId")
+                dynamicView.addAlias("pt", "productTypeId")
+                dynamicView.addAlias("p", "internalName")
+                dynamicView.addAlias("p", "salesDiscontinuationDate")
+                dynamicView.addAlias("pt", "isPhysical")
+
+                def conditionFactory = ec.entity.conditionFactory
+
+                def cond1 = conditionFactory.makeCondition(
+                conditionFactory.makeCondition(
+                "salesDiscontinuationDate",
+                org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS,
+                null
+                ),
+                org.moqui.entity.EntityCondition.JoinOperator.OR,
+                conditionFactory.makeCondition(
+                "salesDiscontinuationDate",
+                org.moqui.entity.EntityCondition.ComparisonOperator.GREATER_THAN,
+                ec.user.nowTimestamp
+                )
+                )
+
+                def cond2 = conditionFactory.makeCondition(
+                conditionFactory.makeCondition(
+                "isPhysical",
+                org.moqui.entity.EntityCondition.ComparisonOperator.NOT_EQUAL,
+                "N"
+                ),
+                org.moqui.entity.EntityCondition.JoinOperator.OR,
+                conditionFactory.makeCondition(
+                "isPhysical",
+                org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS,
+                null
+                )
+                )
+
+                ef.condition(cond1)
+                ef.condition(cond2)
+
+                def productList = ef
+                .selectFields(["productId", "productTypeId", "internalName"])
+                .list()
+
+                ec.logger.info("Retrieved ProductList: ${productList}")
+                ]]>
+            </script>
+        </actions>
+    </service>
+
+    <service verb="get" noun="A1Q03ProductGoodIdentification">
+        <out-parameters>
+            <parameter name="productList" type="List"/>
+        </out-parameters>
+
+        <actions>
+            <script>
+                <![CDATA[
+
+                 def ef = ec.entity.find("org.apache.ofbiz.product.product.Product")
+                 def ev = ef.makeEntityDynamicView()
+
+                 ev.addMemberEntity("p" ,"org.apache.ofbiz.product.product.Product" , null ,null ,null)
+                 ev.addMemberEntity("gi" , "org.apache.ofbiz.product.product.GoodIdentification" , "p" , true , ["productId": "productId"])
+
+                 ev.addAlias("p" , "productId")
+                 ev.addAlias("p" , "internalName" )
+                 ev.addAlias("p" ,"productTypeId")
+                 ev.addAlias("gi" ,"goodIdentificationTypeId")
+                 ev.addAlias("gi" , "idValue")
+
+                 def conditionFactory = ec.entity.conditionFactory
+
+                def cond = conditionFactory.makeCondition([
+                conditionFactory.makeCondition("productTypeId",org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS,"FINISHED_GOOD"),
+                conditionFactory.makeCondition("idValue", org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS,null),
+                conditionFactory.makeCondition("goodIdentificationTypeId",org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS,"ERP_ID")],
+                org.moqui.entity.EntityCondition.JoinOperator.AND)
+
+                 def productList = ef.condition(cond).selectFields(["productId" ,"internalNAme" ,"productTypeId" ,"goodIdentificationTypeId"]).list()
+                 ec.logger.info("Retrieved ProductList: ${productList}")
+                ]]>
+            </script>
+        </actions>
+    </service>
+
+    <service verb="get" noun="A1Q04AllGoodIdentification">
+        <out-parameters>
+            <parameter name="k" type="List"/>
+        </out-parameters>
+        <actions>
+            <script>
+                <![CDATA[
+
+                def ef = ec.entity.find("org.apache.ofbiz.product.product.Product")
+                def ev = ef.makeEntityDynamicView()
+
+                ev.addMemberEntity("p" , "org.apache.ofbiz.product.product.Product" ,null , null ,null)
+               ev.addMemberEntity("ERPGI", "org.apache.ofbiz.product.product.GoodIdentification", "p", true, ["productId":"productId"], [["field-name":"goodIdentificationTypeId", "value":"ERP_ID"]], null)
+               ev.addMemberEntity("NSGI", "org.apache.ofbiz.product.product.GoodIdentification", "p", true, ["productId":"productId"], [["field-name":"goodIdentificationTypeId", "value":"SHOPIFY_PROD_ID"]], null)
+               ev.addMemberEntity("HSGI", "org.apache.ofbiz.product.product.GoodIdentification", "p", true, ["productId":"productId"], [["field-name":"goodIdentificationTypeId", "value":"HS_CODE"]], null)
+                ev.addAlias("p" , "productId")
+                ev.addAlias("ERPGI" ,"ERP_ID", "idValue" ,null)
+                ev.addAlias("NSGI" , "NS_ID", "idValue",null)
+                ev.addAlias("HSGI" , "HS_ID","idValue",null)
+                ev.addAlias("p" , "productTypeId")
+                def k = ef.condition("productTypeId","FINISHED_GOOD").selectFields(["productId","ERP_ID","NS_ID","HS_ID"]).list()
+                ec.logger.info(" Good List: ${k}")
+
+               ]]>
+            </script>
+        </actions>
+    </service>
+
+    <service verb="get" noun="A1Q05">
+        <out-parameters>
+            <parameter name="list" type="List"/>
+        </out-parameters>
+        <actions>
+            <script>
+                <![CDATA[
+                def ef = ec.entity.find("org.apache.ofbiz.order.order.OrderItem")
+                def ev = ef.makeEntityDynamicView()
+
+                ev.addMemberEntity("OI", "org.apache.ofbiz.order.order.OrderItem", null, null, null)
+                ev.addMemberEntity("p", "org.apache.ofbiz.product.product.Product", "OI", true, [productId: "productId"])
+                ev.addMemberEntity("oisg", "org.apache.ofbiz.order.order.OrderItemShipGroup", "OI", true, [orderId: "orderId", shipGroupSeqId: "shipGroupSeqId"])
+                ev.addMemberEntity("f", "org.apache.ofbiz.product.facility.Facility", "oisg", true, [facilityId: "facilityId"])
+                ev.addMemberEntity("psc", "org.apache.ofbiz.product.catalog.ProductStoreCatalog", "OI", true, [prodCatalogId: "prodCatalogId"])
+                ev.addMemberEntity("ohis", "org.apache.ofbiz.order.order.OrderHistory", "OI", true, [orderId: "orderId", orderItemSeqId: "orderItemSeqId"])
+                ev.addMemberEntity("os", "org.apache.ofbiz.order.order.OrderStatus", "OI", true, [orderId: "orderId", orderItemSeqId: "orderItemSeqId"])
+
+
+                ev.addAlias("p", "productId", "productId", null)
+                ev.addAlias("p", "internalName", "internalName", null)
+                ev.addAlias("p", "productTypeId", "productTypeId", null)
+                ev.addAlias("ohis", "orderHistoryId", "orderHistoryId", null)
+                ev.addAlias("OI", "quantity", "quantity", null)
+                ev.addAlias("f", "facilityId", "facilityId", null)
+                ev.addAlias("OI", "externalId", "externalId", null)
+                ev.addAlias("OI", "orderItemSeqId", "orderItemSeqId", null)
+                ev.addAlias("oisg", "shipGroupSeqId", "shipGroupSeqId", null)
+
+
+                ev.addAlias("os", "statusId", "statusId", null)
+                ev.addAlias("os", "statusDatetime", "statusDatetime", null)
+
+                def conditionFactory = ec.entity.conditionFactory
+
+                def cond = conditionFactory.makeCondition([
+                    conditionFactory.makeCondition("statusId", org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS, "ORDER_COMPLETED"),
+                    conditionFactory.makeCondition("statusDatetime", org.moqui.entity.EntityCondition.ComparisonOperator.GREATER_THAN_EQUALS_TO,"2023-08-01"),
+                    conditionFactory.makeCondition("statusDatetime", org.moqui.entity.EntityCondition.ComparisonOperator.LESS_THAN_EQUALS_TO, "2023-09-01"),
+                    conditionFactory.makeCondition("facilityId", org.moqui.entity.EntityCondition.ComparisonOperator.NOT_EQUAL, "_NA_")
+                ], org.moqui.entity.EntityCondition.JoinOperator.AND)
+
+                list = ef.condition(cond).selectFields([
+                    "productId", "internalName", "productTypeId", "orderHistoryId",
+                    "quantity", "facilityId", "orderItemSeqId", "shipGroupSeqId"
+                ]).list()
+                ]]>
+            </script>
+        </actions>
+    </service>
+
+    <service verb="get" noun="A1Q06PaymentMethod">
+       <out-parameters>
+           <parameter name="orderList" type="List"/>
+       </out-parameters>
+
+        <actions>
+            <script>
+                <![CDATA[
+                   def ef = ec.entity.find("org.apache.ofbiz.order.order.OrderPaymentPreference")
+                   def ev = ef.makeEntityDynamicView()
+
+                   ev.addMemberEntity("OPP","org.apache.ofbiz.order.order.OrderPaymentPreference",null ,null ,null)
+                   ev.addMemberEntity("OH","org.apache.ofbiz.order.order.OrderHeader","OPP" , true, ["orderId":"orderId"])
+
+                   ev.addAlias("OPP", "paymentMethodTypeId")
+                   ev.addAlias("OH", "orderId")
+                   ev.addAlias("OPP" ,"maxAmount")
+                   ev.addAlias("OH" ,"externalId")
+
+                   orderList = ef.selectFields(["paymentMethodTypeId","orderId","MaxAmount","ExternalId"]).orderBy("orderId").list()
+                   ec.logger.info("${orderList}")
+                ]]>
+            </script>
+        </actions>
+    </service>
+
+    <service verb="get" noun="A107">
+        <out-parameters>
+            <parameter name="list" type="List"/>
+        </out-parameters>
+        <actions>
+            <script>
+                <![CDATA[
+                def ef = ec.entity.find("org.apache.ofbiz.order.order.OrderPaymentPreference")
+                def ev = ef.makeEntityDynamicView()
+
+                ev.addMemberEntity("opp", "org.apache.ofbiz.order.order.OrderPaymentPreference", null, null, null)
+                ev.addMemberEntity("oh", "org.apache.ofbiz.order.order.OrderHeader", "opp", false, [orderId: "orderId"])
+                ev.addMemberEntity("s", "org.apache.ofbiz.shipment.shipment.Shipment", "opp", true, [orderId: "primaryOrderId"])
+
+                ev.addAlias("oh", "orderId", "orderId", null)
+                ev.addAlias("oh", "orderStatus", "statusId", null)
+                ev.addAlias("opp", "paymentStatus", "statusId", null)
+                ev.addAlias("s", "shipmentId", "shipmentId", null)
+
+                def conditionFactory = ec.entity.conditionFactory
+
+                def cond = conditionFactory.makeCondition([
+                    conditionFactory.makeCondition("paymentStatus", org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS, "PAYMENT_SETTLED"),
+                    conditionFactory.makeCondition("shipmentId", org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS, null)
+                ], org.moqui.entity.EntityCondition.JoinOperator.AND)
+
+                list = ef.condition(cond).selectFields(["orderId", "orderStatus", "paymentStatus"]).list()
+                ]]>
+            </script>
+        </actions>
+    </service>
+
+    <service verb="get" noun="A1Q08OrderHourly">
+        <out-parameters>
+            <parameter name="orderHourly"  type="List"/>
+        </out-parameters>
+        <actions>
+            <script>
+                <![CDATA[
+               import java.sql.Timestamp
+               import java.time.LocalDateTime
+
+               def ef = ec.entity.find("org.apache.ofbiz.order.order.OrderHeader")
+               def ev = ef.makeEntityDynamicView()
+               ev.addMemberEntity("oh", "org.apache.ofbiz.order.order.OrderHeader", null, null, null)
+               ev.addAlias("oh", "total_orders", "orderId", "count")
+               ev.addPqExprAlias("hour", "HOUR(ENTRY_DATE)", "number-integer", null)
+               ev.addAlias("oh", "entryDate")
+               ev.addAlias("oh", "statusId")
+
+               def conditionFactory = ec.entity.conditionFactory
+               def oneMonthAgo = Timestamp.valueOf(LocalDateTime.now().minusMonths(1))
+               def dateCond = conditionFactory.makeCondition(
+               conditionFactory.makeCondition("entryDate", org.moqui.entity.EntityCondition.ComparisonOperator.GREATER_THAN_EQUAL_TO, oneMonthAgo),
+               org.moqui.entity.EntityCondition.JoinOperator.AND,
+               conditionFactory.makeCondition("entryDate", org.moqui.entity.EntityCondition.ComparisonOperator.LESS_THAN_EQUAL_TO, ec.user.nowTimestamp))
+               ef.condition(dateCond)
+               ef.condition("statusId", "ORDER_COMPLETED")
+               orderHourly = ef.selectFields(["hour", "total_orders"]).orderBy("hour").list()
+               ec.logger.info("Hourly Orders: ${orderHourly}")
+              ]]>
+            </script>
+        </actions>
+    </service>
+
+    <service verb="get" noun="A1Q09BOPISRevenue">
+        <out-parameters>
+             <parameter name="bopisOrderRevenue"/>
+        </out-parameters>
+
+        <actions>
+            <script>
+                <![CDATA[
+                   def ef = ec.entity.find("org.apache.ofbiz.order.order.OrderHeader")
+                   def ev = ef.makeEntityDynamicView()
+
+                   ev.makeMemberEntity("OH" , "org.apache.ofbiz.order.order.OrderHeader" , null , null ,null)
+                   ev.makeMemberEntity("OIS" ,"org.apache.ofbiz.order.order.OrderItemShipGroup" ,"OH" , false , ["orderId":"orderId"])
+                   ev.makeMemberEntity("AD" ,"org.apache.ofbiz.order.order.OrderAdjustment" ,"OH" , true , ["orderId":"orderId"])
+
+                   ev.addAlias("OIS" ,"SHIPMENT_METHOD_TYPE_ID")
+                   ev.addAlias("OH","SALES_CHANNEL_ENUM_ID")
+                   ev.addAlias("AD", "orderId" )
+                   ev.addAlias("AD" , "Amount" ,"TotalAmount" ,"SUM")
+                   ev.contion("SHIPMENT_METHOD_TYPE_ID","STOREPICKUP")
+                   ef.condition("SALES_CHANNEL_ENUM_ID" , "WEB_SALES_CHANNEL")
+                   def tempTable = ef.selectField(["orderId" ,"TotalAmount"]).groupBy("orderID").list();
+
+
+                   def ef1 = ec.entity.find("org.apache.ofbiz.order.order.OrderHeader")
+                   def ev1 = ef1.makeEntityDynamicView()
+
+                   ev1.makeMemberEntity("OH","org.apache.ofbiz.order.order.OrderHeader" ,null , null ,null)
+                   ev1.makeMemberEntity("OA" , "ec.tempTable" , "OH" , false , ["orderId" : "orderId"])
+                   ev1.makeMemberEntity("OS" , "org.apache.obiz.order.order.OrderStatus" ,"OH" , true , ["orderId":"orderId"])
+
+                   ev1.addAlias("OA" , "orderId" ,"orderId" , "count")
+                   ev1.addAlias("OS" ,"StatusDateTime")
+                   ev1.addAlias("OS" ,"StatusId")
+                   ev1.addAlias("OA" , "TotalAmount")
+                   ev1.addAlias("OH","GrandTotal")
+                   ev1.addPqExprAlias("Revenue", "SUM(IFNULL(OH.GRAND_TOTAL, 0) - IFNULL(OA.OTHER_CHARGES, 0))", "number-integer", null)
+
+                   def conditionFactory = ec.entity.conditionFactory
+
+                   cond1 = conditionFactory.makeCondition(
+                   makeCondition("StatusDateTime" , org.moqui.entity.EntityCondition.ComparisonOperator.GREATER_THAN_EQUALS_TO ,"2025-01-01")
+                   org.moqui.entity.EntityCondition.JoinOperator.AND ,
+                   makeCondition("StatusDateTime" , org.moqui.entity.EntityCondition.ComparisonOperator.LESS_THAN_EQUALS_TO ,"2026-06-01")
+                   )
+                   ev1.condition(cond1)
+                   ev1.condition("Status_Id","ITEM_COMPLETED")
+
+                  bopisOrderRevenue =  ev1.selectField(["orderId","Revenue"]).list()
+
+                  ec.logger.info("${bopisOrderRevenue}")
+                ]]>
+            </script>
+        </actions>
+
+    </service>
+
+    <service verb="get" noun="A1Q10ItemCancleCount">
+        <out-parameters>
+            <parameter name="cancelItemCount" type="List"/>
+        </out-parameters>
+
+        <actions>
+            <script>
+                <![CDATA[
+                   def ef = ec.entity.find("org.apache.ofbiz.order.order.OrderStatus")
+                   def ev = ef.makeEntityDynamicView()
+                    ev.addMemberEntity("OS","org.apache.ofbiz.order.order.OrderStatus" ,null ,null ,null)
+
+                    ev.addAlias("OS" , "orderId" ,"orderId" , COUNT)
+                    ev.addAlias("OS" , "changeReason")
+                    ev.addAlias("OS" , "statusId")
+                    ev.addAlias("OS" , "statusDatetime")
+                    def conditionFactory = ec.entity.conditionFactory
+
+                    def cond1 = conditionFactory.makeCondition([
+                    conditionFactory.makeCondition("statusDatetime",org.moqui.entity.EntityCondition.ComparisonOperator.GREATER_THAN_EQUAL_TO,"2026-05-01"),
+                    conditionFactory.makeCondition("statusDatetime",org.moqui.entity.EntityCondition.ComparisonOperator.LESS_THAN_EQUAL_TO ,"2026-06-01")
+                    ,conditionFactory.makeCondition("statusId",org.moqui.entity.EntityCondition.ComparisonOperator.EQUALS,"ITEM_CANCELLED")],
+                    org.moqui.entity.EntityCondition.JoinOperator.AND)
+
+                    ef.condition(cond1)
+                    cancelItemCount = ef.selectFields(["OrderId","changeReason"]).list()
+                    ec.logger.info("${cancelItemCount}")
+                ]]>
+            </script>
+        </actions>
+    </service>
+
+   <service verb="get" noun="A1Q011">
+       <out-parameters>
+           <parameter name="list" type="List">
+
+           </parameter>
+       </out-parameters>
+   </service>
+
+<!--    2 Assignment is started -->
+
+<!--    SELECT-->
+<!--    OH.ORDER_ID,-->
+<!--    P.PARTY_ID,-->
+<!--    P.FIRST_NAME,-->
+<!--    P.LAST_NAME,-->
+<!--    PA.ADDRESS1,-->
+<!--    PA.CITY,-->
+<!--    PA.STATE_PROVINCE_GEO_ID,-->
+<!--    PA.COUNTRY_GEO_ID,-->
+<!--    OH.STATUS_ID,-->
+<!--    OH.ORDER_DATE-->
+<!--    FROM ORDER_HEADER OH-->
+<!--    JOIN ORDER_ROLE ORR-->
+<!--    ON OH.ORDER_ID = ORR.ORDER_ID-->
+<!--    AND ORR.ROLE_TYPE_ID = 'SHIP_TO_CUSTOMER'-->
+<!--    JOIN ORDER_CONTACT_MECH OCM-->
+<!--    ON OH.ORDER_ID = OCM.ORDER_ID-->
+<!--    AND OCM.CONTACT_MECH_PURPOSE_TYPE_ID = 'SHIPPING_LOCATION'-->
+<!--    JOIN POSTAL_ADDRESS PA ON PA.CONTACT_MECH_ID = OCM.CONTACT_MECH_ID-->
+<!--    LEFT JOIN PERSON P ON P.PARTY_ID = ORR.PARTY_ID-->
+<!--    WHERE (-->
+<!--    OH.ORDER_DATE >= '2023-10-01'-->
+<!--    AND OH.ORDER_DATE < '2023-11-01'-->
+<!--    )-->
+
+    <service verb="get" noun="A2Q012">
+        <out-parameters>
+            <parameter name="list" type="List"/>
+        </out-parameters>
+
+        <actions>
+            <script>
+                <![
+            </script>
+        </actions>
+    </service>
+
+<!--    SELECT-->
+<!--    OH.ORDER_ID,-->
+<!--    P.FIRST_NAME,-->
+<!--    P.LAST_NAME,-->
+<!--    OH.GRAND_TOTAL,-->
+<!--    PA.ADDRESS1,-->
+<!--    PA.CITY,-->
+<!--    PA.STATE_PROVINCE_GEO_ID,-->
+<!--    PA.COUNTRY_GEO_ID,-->
+<!--    OH.STATUS_ID,-->
+<!--    OH.ORDER_DATE-->
+<!--    FROM ORDER_HEADER OH-->
+<!--    JOIN ORDER_ROLE ORR-->
+<!--    ON OH.ORDER_ID = ORR.ORDER_ID-->
+<!--    AND ORR.ROLE_TYPE_ID = 'SHIP_TO_CUSTOMER'-->
+<!--    JOIN ORDER_CONTACT_MECH OCM-->
+<!--    ON OH.ORDER_ID = OCM.ORDER_ID-->
+<!--    AND OCM.CONTACT_MECH_PURPOSE_TYPE_ID = 'SHIPPING_LOCATION'-->
+<!--    JOIN POSTAL_ADDRESS PA ON PA.CONTACT_MECH_ID = OCM.CONTACT_MECH_ID-->
+<!--    JOIN PERSON P ON P.PARTY_ID = ORR.PARTY_ID-->
+<!--    WHERE OH.STATUS_ID = 'ORDER_COMPLETED'-->
+<!--    AND PA.STATE_PROVINCE_GEO_ID = 'NY';-->
+
+    <service verb="get" noun="A2Q013">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    WITH product_sales AS (-->
+<!--    SELECT-->
+<!--    OI.PRODUCT_ID,-->
+<!--    PA.CITY,-->
+<!--    P.INTERNAL_NAME,-->
+<!--    PA.STATE_PROVINCE_GEO_ID,-->
+<!--    SUM(OI.QUANTITY) AS quantity,-->
+<!--    SUM(OI.QUANTITY * OI.UNIT_PRICE) AS revenue-->
+<!--    FROM ORDER_HEADER OH-->
+<!--    JOIN ORDER_ITEM OI ON OH.ORDER_ID = OI.ORDER_ID-->
+<!--    JOIN PRODUCT P ON P.PRODUCT_ID = OI.PRODUCT_ID-->
+<!--    JOIN ORDER_ROLE ORR-->
+<!--    ON OH.ORDER_ID = ORR.ORDER_ID-->
+<!--    AND ORR.ROLE_TYPE_ID = 'SHIP_TO_CUSTOMER'-->
+<!--    LEFT JOIN ORDER_CONTACT_MECH OCM-->
+<!--    ON OH.ORDER_ID = OCM.ORDER_ID-->
+<!--    AND OCM.CONTACT_MECH_PURPOSE_TYPE_ID = 'SHIPPING_LOCATION'-->
+<!--    LEFT JOIN POSTAL_ADDRESS PA ON PA.CONTACT_MECH_ID = OCM.CONTACT_MECH_ID-->
+<!--    WHERE PA.STATE_PROVINCE_GEO_ID = 'NY'-->
+<!--    GROUP BY OI.PRODUCT_ID, PA.CITY, PA.STATE_PROVINCE_GEO_ID-->
+<!--    )-->
+<!--    SELECT *-->
+<!--    FROM (-->
+<!--    SELECT *,-->
+<!--    ROW_NUMBER() OVER (-->
+<!--    PARTITION BY CITY-->
+<!--    ORDER BY quantity DESC-->
+<!--    ) AS rn-->
+<!--    FROM product_sales-->
+<!--    ) t-->
+<!--    WHERE rn = 1;-->
+
+
+    <service verb="get" noun="A2Q014">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    F.FACILITY_ID,-->
+<!--    F.FACILITY_NAME,-->
+<!--    COUNT(DISTINCT OI.ORDER_ID) AS TOTAL_ORDERS,-->
+<!--    SUM(OI.QUANTITY * OI.UNIT_PRICE) AS TOTAL_REVENUE,-->
+<!--    CONCAT(-->
+<!--    MIN(DATE(OI.CREATED_STAMP)),-->
+<!--    ' - ',-->
+<!--    MAX(DATE(OI.CREATED_STAMP))-->
+<!--    ) AS DATE_RANGE-->
+<!--    FROM ORDER_ITEM OI-->
+<!--    JOIN PRODUCT_FACILITY PF ON PF.PRODUCT_ID = OI.PRODUCT_ID-->
+<!--    JOIN FACILITY F ON F.FACILITY_ID = PF.FACILITY_ID-->
+<!--    GROUP BY PF.FACILITY_ID;-->
+
+    <service verb="get" noun="A2Q015">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    II.PRODUCT_ID,-->
+<!--    II.FACILITY_ID,-->
+<!--    SUM(IID.QUANTITY_ON_HAND_DIFF),-->
+<!--    IID.REASON_ENUM_ID-->
+<!--    FROM INVENTORY_ITEM_DETAIL IID-->
+<!--    JOIN INVENTORY_ITEM II ON II.INVENTORY_ITEM_ID = IID.INVENTORY_ITEM_ID-->
+<!--    GROUP BY IID.INVENTORY_ITEM_ID, IID.REASON_ENUM_ID-->
+<!--    HAVING IID.Reason_Enum_Id = "VAR_DAMAGED"-->
+<!--    OR IID.REASON_ENUM_ID = "VAR_LOST";-->
+
+    <service verb="get" noun="A2Q016">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    PF.PRODUCT_ID,-->
+<!--    P.PRODUCT_NAME,-->
+<!--    PF.FACILITY_ID,-->
+<!--    COALESCE(II.QUANTITY_ON_HAND_TOTAL, 0) AS QOH,-->
+<!--    COALESCE(II.AVAILABLE_TO_PROMISE, 0) AS ATP,-->
+<!--    COALESCE(PF.MINIMUM_STOCK, 0) AS REORDER_THRESHOLD,-->
+<!--    CURRENT_TIMESTAMP AS DATE_CHECKED-->
+<!--    FROM PRODUCT_FACILITY PF-->
+<!--    JOIN PRODUCT P-->
+<!--    ON PF.PRODUCT_ID = P.PRODUCT_ID-->
+<!--    JOIN INVENTORY_ITEM II-->
+<!--    ON II.PRODUCT_ID = PF.PRODUCT_ID-->
+<!--    AND II.FACILITY_ID = PF.FACILITY_ID-->
+<!--    WHERE COALESCE(II.AVAILABLE_TO_PROMISE, 0) < COALESCE(PF.MINIMUM_STOCK, 0)-->
+<!--    OR COALESCE(II.AVAILABLE_TO_PROMISE, 0) <= 0;-->
+
+    <service verb="get" noun="A2Q017">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT DISTINCT-->
+<!--    F.FACILITY_NAME,-->
+<!--    F.FACILITY_TYPE_ID,-->
+<!--    F.FACILITY_ID,-->
+<!--    OH.STATUS_ID AS ORDER_STATUS,-->
+<!--    OH.ORDER_ID-->
+<!--    FROM ORDER_HEADER OH-->
+<!--    JOIN ORDER_ITEM OI ON OH.ORDER_ID = OI.ORDER_ID-->
+<!--    JOIN ORDER_ITEM_SHIP_GROUP OISG-->
+<!--    ON OISG.ORDER_ID = OI.ORDER_ID-->
+<!--    AND OISG.SHIP_GROUP_SEQ_ID = OI.SHIP_GROUP_SEQ_ID-->
+<!--    JOIN FACILITY F ON OISG.FACILITY_ID = F.FACILITY_ID-->
+<!--    WHERE OH.STATUS_ID <> "ORDER_COMPLETED"-->
+<!--    AND OH.STATUS_ID <> "ORDER_CANCELLED";-->
+
+    <service verb="get" noun="A2Q018">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    product_id,-->
+<!--    facility_id,-->
+<!--    Quantity_on_Hand_Total,-->
+<!--    Available_to_promise_total,-->
+<!--    Quantity_on_Hand_Total - Available_to_promise_total AS Difference-->
+<!--    FROM Inventory_Item;-->
+
+    <service verb="get" noun="A2Q019">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    OS1.Order_id,-->
+<!--    OS2.order_item_seq_id,-->
+<!--    OS2.Status_id,-->
+<!--    OS2.STATUS_USER_LOGIN,-->
+<!--    OS2.STATUS_DATETIME-->
+<!--    FROM Order_Status OS1-->
+<!--    JOIN order_status OS2-->
+<!--    ON OS1.order_id = OS2.order_id-->
+<!--    AND OS1.order_item_seq_id = OS2.order_item_seq_id-->
+<!--    WHERE OS1.STATUS_ID = "ITEM_APPROVED"-->
+<!--    AND OS2.STATUS_ID = "ITEM_COMPLETED";-->
+
+    <service verb="get" noun="A2Q020">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    SUM(COALESCE(OH.grand_total, 0) - COALESCE(Ad.Adjustments, 0)) AS totalRevenue,-->
+<!--    OH.sales_channel_enum_id,-->
+<!--    COUNT(OH.order_id) AS totalOrder,-->
+<!--    CONCAT(MIN(DATE(OH.Entry_date)), '&#45;&#45;', MAX(DATE(OH.Entry_date))) AS PERIOD-->
+<!--    FROM ORDER_HEADER OH-->
+<!--    LEFT JOIN (-->
+<!--    SELECT-->
+<!--    order_id,-->
+<!--    SUM(Amount) AS Adjustments-->
+<!--    FROM ORDER_ADJUSTMENT-->
+<!--    GROUP BY order_id-->
+<!--    ) Ad ON Ad.order_id = OH.order_id-->
+<!--    WHERE OH.status_id = "Order_completed"-->
+<!--    GROUP BY OH.sales_channel_enum_id;-->
+
+    <service verb="get" noun="A2Q021">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    oi.ORDER_ID,-->
+<!--    oi.ORDER_ITEM_SEQ_ID,-->
+<!--    p.PRODUCT_ID,-->
+<!--    p.PRODUCT_TYPE_ID,-->
+<!--    oh.SALES_CHANNEL_ENUM_ID,-->
+<!--    oh.ORDER_DATE,-->
+<!--    oh.ENTRY_DATE,-->
+<!--    oh.STATUS_ID,-->
+<!--    oh.ORDER_TYPE_ID,-->
+<!--    oh.PRODUCT_STORE_ID,-->
+<!--    os.STATUS_DATETIME-->
+<!--    FROM ORDER_HEADER oh-->
+<!--    JOIN ORDER_ITEM oi-->
+<!--    ON oh.ORDER_ID = oi.ORDER_ID-->
+<!--    JOIN PRODUCT p-->
+<!--    ON p.PRODUCT_ID = oi.PRODUCT_ID-->
+<!--    JOIN ORDER_STATUS os-->
+<!--    ON os.ORDER_ID = oi.ORDER_ID-->
+<!--    WHERE p.product_type_id IN (-->
+<!--    SELECT product_type_id-->
+<!--    FROM product_type-->
+<!--    WHERE is_physical = "y"-->
+<!--    )-->
+<!--    AND oi.status_id = "ORDER_COMPLETED";-->
+
+    <service verb="get" noun="A3Q022">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    RI.RETURN_ID ,-->
+<!--    OH.ORDER_ID,-->
+<!--    OH.PRODUCT_STORE_ID,-->
+<!--    RS.STATUS_DATETIME,-->
+<!--    RH.FROM_PARTY_ID,-->
+<!--    RH.RETURN_DATE,-->
+<!--    RH.ENTRY_DATE,-->
+<!--    RH.RETURN_CHANNEL_ENUM_ID-->
+<!--    FROM RETURN_ITEM RI-->
+<!--    JOIN RETURN_HEADER RH-->
+<!--    ON RI.RETURN_ID = RH.RETURN_ID-->
+<!--    JOIN RETURN_STATUS RS-->
+<!--    ON RS.RETURN_ID = RI.RETURN_ID AND RS.RETURN_ITEM_SEQ_ID = RI.RETURN_ITEM_SEQ_ID-->
+<!--    JOIN ORDER_HEADER OH-->
+<!--    ON OH.ORDER_ID = RI.ORDER_ID-->
+<!--    WHERE RS.STATUS_ID = "RETURN_COMPLETED";-->
+
+    <service verb="get" noun="A3Q023">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    p.party_id,-->
+<!--    RI.order_id,-->
+<!--    p.First_name,-->
+<!--    p.last_name-->
+<!--    FROM Return_Header RH-->
+<!--    JOIN (-->
+<!--    SELECT-->
+<!--    Return_id,-->
+<!--    order_id-->
+<!--    FROM return_item-->
+<!--    GROUP BY order_id , Return_id-->
+<!--    HAVING COUNT(order_id) = 1-->
+<!--    ) RI ON RI.return_id = RH.return_id-->
+<!--    LEFT JOIN Person p ON p.party_id = RH.from_party_id;-->
+
+    <service verb="get" noun="A3Q024">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    COUNT(RI.return_id) AS total_return,-->
+<!--    COUNT(RA.RETURN_TYPE_ID)-->
+<!--    AS appeasement_count-->
+<!--    FROM RETURN_ITEM RI-->
+<!--    LEFT JOIN RETURN_ADJUSTMENT RA ON RI.return_id = RA.return_id and RA.RETURN_TYPE_ID="Appeasement"-->
+
+    <service verb="get" noun="A3Q025">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    RH.RETURN_ID,-->
+<!--    OH.ENTRY_DATE,-->
+<!--    RA.RETURN_ADJUSTMENT_TYPE_ID,-->
+<!--    RA.AMOUNT,-->
+<!--    COMMENTS,-->
+<!--    OH.ORDER_ID,-->
+<!--    OH.ORDER_DATE,-->
+<!--    RH.RETURN_DATE,-->
+<!--    OH.PRODUCT_STORE_ID-->
+<!--    FROM RETURN_HEADER RH-->
+<!--    JOIN RETURN_ITEM RI ON RH.RETURN_ID = RI.RETURN_ID-->
+<!--    JOIN ORDER_HEADER OH ON RI.ORDER_ID = OH.ORDER_ID-->
+<!--    LEFT JOIN RETURN_ADJUSTMENT RA ON RA.RETURN_ID = RI.RETURN_ID;-->
+
+    <service verb="get" noun="A3Q026">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT DISTINCT-->
+<!--    RI.ORDER_ID,-->
+<!--    RI.RETURN_ID,-->
+<!--    RH.RETURN_DATE,-->
+<!--    RI.RETURN_REASON_ID,-->
+<!--    RI.RETURN_QUANTITY-->
+<!--    FROM RETURN_ITEM RI-->
+<!--    JOIN (-->
+<!--    SELECT ORDER_ID-->
+<!--    FROM RETURN_ITEM-->
+<!--    GROUP BY ORDER_ID-->
+<!--    HAVING COUNT(DISTINCT RETURN_ID) >= 2-->
+<!--    ) AS FO ON FO.ORDER_ID = RI.ORDER_ID-->
+<!--    JOIN RETURN_HEADER RH ON RH.RETURN_ID = RI.RETURN_ID;-->
+
+    <service verb="get" noun="A3Q027">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    OIS.FACILITY_ID,-->
+<!--    F.FACILITY_NAME,-->
+<!--    DATE_SUB(NOW(), INTERVAL 1 MONTH) AS REPORTING_PERIOD,-->
+<!--    COUNT(OI.ORDER_ID) AS TOTAL_ORDER_ITEM-->
+<!--    FROM ORDER_ITEM OI-->
+<!--    JOIN ORDER_ITEM_SHIP_GROUP OIS-->
+<!--    ON OIS.ORDER_ID = OI.ORDER_ID-->
+<!--    AND OIS.SHIP_GROUP_SEQ_ID = OI.SHIP_GROUP_SEQ_ID-->
+<!--    LEFT JOIN FACILITY F ON OIS.FACILITY_ID = F.FACILITY_ID-->
+<!--    JOIN ORDER_STATUS OS-->
+<!--    ON OS.ORDER_ID = OI.ORDER_ID-->
+<!--    AND OS.STATUS_ID = 'ITEM_COMPLETED'-->
+<!--    WHERE OIS.SHIPMENT_METHOD_TYPE_ID = 'NEXT_DAY'-->
+<!--    AND F.FACILITY_TYPE_ID NOT IN (-->
+<!--    SELECT FACILITY_TYPE_ID-->
+<!--    FROM FACILITY_TYPE-->
+<!--    WHERE PARENT_TYPE_ID = 'VIRTUAL_FACILITY'-->
+<!--    )-->
+<!--    AND OI.STATUS_ID = 'ITEM_COMPLETED'-->
+<!--    AND OS.STATUS_DATETIME >= DATE_SUB(NOW(), INTERVAL 1 MONTH)-->
+<!--    GROUP BY OIS.FACILITY_ID, F.FACILITY_NAME;-->
+
+    <service verb="get" noun="A3Q028">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    P.PARTY_ID,-->
+<!--    CONCAT(PER.FIRST_NAME, ' ', PER.LAST_NAME) AS NAME,-->
+<!--    P.STATUS_ID,-->
+<!--    FP.FACILITY_ID-->
+<!--    FROM PARTY P-->
+<!--    LEFT JOIN PERSON PER ON P.PARTY_ID = PER.PARTY_ID-->
+<!--    JOIN PARTY_ROLE PR-->
+<!--    ON P.PARTY_ID = PR.PARTY_ID-->
+<!--    AND PR.ROLE_TYPE_ID = 'WAREHOUSE_PICKER'-->
+<!--    LEFT JOIN FACILITY_PARTY FP-->
+<!--    ON FP.PARTY_ID = P.PARTY_ID-->
+<!--    AND FP.ROLE_TYPE_ID = 'WAREHOUSE_PICKER';-->
+
+    <service verb="get" noun="A3Q029">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    P.PRODUCT_ID,-->
+<!--    P.INTERNAL_NAME,-->
+<!--    COALESCE(COUNT(DISTINCT PF.FACILITY_ID), 0) AS FACILITY_COUNT-->
+<!--    FROM PRODUCT P-->
+<!--    JOIN PRODUCT_PRICE PP-->
+<!--    ON PP.PRODUCT_ID = P.PRODUCT_ID-->
+<!--    AND PP.PRODUCT_PRICE_TYPE_ID = 'LIST_PRICE'-->
+<!--    JOIN PRODUCT_FACILITY PF ON PF.PRODUCT_ID = P.PRODUCT_ID-->
+<!--    GROUP BY PF.PRODUCT_ID;-->
+
+    <service verb="get" noun="A3Q030">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT-->
+<!--    PF.PRODUCT_ID,-->
+<!--    PF.FACILITY_ID,-->
+<!--    F.FACILITY_TYPE_ID,-->
+<!--    II.QUANTITY_ON_HAND_TOTAL AS QOH,-->
+<!--    II.AVAILABLE_TO_PROMISE_TOTAL AS ATP-->
+<!--    FROM PRODUCT_FACILITY PF-->
+<!--    LEFT JOIN INVENTORY_ITEM II-->
+<!--    ON II.PRODUCT_ID = PF.PRODUCT_ID-->
+<!--    AND II.FACILITY_ID = PF.FACILITY_ID-->
+<!--    JOIN FACILITY F ON F.FACILITY_ID = PF.FACILITY_ID-->
+<!--    WHERE F.FACILITY_TYPE_ID NOT IN (-->
+<!--    SELECT FACILITY_TYPE_ID-->
+<!--    FROM FACILITY_TYPE-->
+<!--    WHERE PARENT_TYPE_ID = 'VIRTUAL_FACILITY'-->
+<!--    );-->
+
+    <service verb="get" noun="A3Q031">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+<!--    SELECT-->
+<!--    OH.ORDER_ID AS TRANSFER_ORDER_ID,-->
+<!--    OH.ORIGIN_FACILITY_ID AS FROM_FACILITY_ID,-->
+<!--    OIS.FACILITY_ID AS TO_FACILITY_ID,-->
+<!--    OI.PRODUCT_ID,-->
+<!--    OI.QUANTITY AS REQUESTED_QUANTITY,-->
+<!--    0 AS RESERVED_QUANTITY,-->
+<!--    DATE(OH.ORDER_DATE) AS TRANSFER_DATE,-->
+<!--    OH.STATUS_ID AS STATUS-->
+<!--    FROM ORDER_HEADER OH-->
+<!--    JOIN ORDER_ITEM OI ON OI.ORDER_ID = OH.ORDER_ID-->
+<!--    JOIN ORDER_ITEM_SHIP_GROUP OIS ON OIS.ORDER_ID = OH.ORDER_ID-->
+<!--    LEFT JOIN ORDER_ITEM_SHIP_GRP_INV_RES OTSHIR-->
+<!--    ON OTSHIR.ORDER_ID = OIS.ORDER_ID-->
+<!--    AND OTSHIR.SHIP_GROUP_SEQ_ID = OIS.SHIP_GROUP_SEQ_ID-->
+<!--    AND OTSHIR.ORDER_ITEM_SEQ_ID = OI.ORDER_ITEM_SEQ_ID-->
+<!--    WHERE OH.ORDER_TYPE_ID = 'TRANSFER_ORDER'-->
+<!--    AND OTSHIR.RESERVED_DATETIME IS NULL-->
+<!--    AND OH.STATUS_ID = 'ORDER_APPROVED'-->
+<!--    ORDER BY OH.ORDER_ID;-->
+    <service verb="get" noun="A3Q032">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+
+<!--    SELECT DISTINCT-->
+<!--    OH.ORDER_ID,-->
+<!--    DATE(OH.ORDER_DATE) AS ORDER_DATE,-->
+<!--    OH.STATUS_ID AS ORDER_STATUS,-->
+<!--    OIS.FACILITY_ID,-->
+<!--    DATEDIFF(NOW(), OIS.CREATED_STAMP) AS DURATION_IN_DAYS-->
+<!--    FROM ORDER_HEADER OH-->
+<!--    JOIN ORDER_ITEM_SHIP_GROUP OIS ON OH.ORDER_ID = OIS.ORDER_ID-->
+<!--    LEFT JOIN SHIPMENT S ON OIS.ORDER_ID = S.PRIMARY_ORDER_ID-->
+<!--    LEFT JOIN FACILITY F ON F.FACILITY_ID = OIS.FACILITY_ID-->
+<!--    WHERE S.SHIPMENT_ID IS NULL-->
+<!--    AND OH.STATUS_ID = 'ORDER_APPROVED'-->
+<!--    AND F.FACILITY_TYPE_ID NOT IN (-->
+<!--    SELECT FACILITY_TYPE_ID-->
+<!--    FROM FACILITY_TYPE-->
+<!--    WHERE PARENT_TYPE_ID = 'VIRTUAL_FACILITY'-->
+<!--    )-->
+<!--    ORDER BY DURATION_IN_DAYS DESC;-->
+
+    <service verb="get" noun="A3Q033">
+        <out-parameters>
+            <parameter name="list" type="List">
+
+            </parameter>
+        </out-parameters>
+    </service>
+</services>
