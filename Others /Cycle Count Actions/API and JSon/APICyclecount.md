@@ -1,3 +1,8 @@
+System Message type  that consume the CSV after import 
+sendServiceName :
+Consume#InventoryCountImportCSv
+ 
+ 
  1. Preview Cycle Count (GET Requests)
 
 When previewing the count, these four requests are fired to fetch the cycle count details, sessions, and review counts:
