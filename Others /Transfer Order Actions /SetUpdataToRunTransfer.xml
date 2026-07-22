@@ -4,8 +4,6 @@
 <org.apache.ofbiz.security.securitygroup.SecurityPermission permissionId="ORD_TRANSFER_ORDER_ADMIN" description="Transfer App Admin"/>
 <org.apache.ofbiz.security.securitygroup.SecurityGroupPermission groupId="COMMERCE_SUPER"  fromDate="2026-07-21 13:15"/>
 
-<!-- As of still the  hotwax.user is the admin we need to Assocaited him with any of the Facility , else TransferOrder App giving the issue , No facility is associated with the user as of now I associated with on FacilityId-->
-<org.apache.ofbiz.product.facility.FacilityParty facilityId="NN_ST_ATL" partyId="" roleTypeId="WAREHOUSE_MANAGER" fromDate="2026-07-22 05:18"/>
 
   <!--  Here is the Data that need to enter for the shipping locations-->
 <org.apache.ofbiz.party.contact.ContactMech contactMechId="M10001" contactMechTypeId="POSTAL_ADDRESS"/> 
