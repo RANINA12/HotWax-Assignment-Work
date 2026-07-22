@@ -4,7 +4,10 @@
 <org.apache.ofbiz.security.securitygroup.SecurityPermission permissionId="ORD_TRANSFER_ORDER_ADMIN" description="Transfer App Admin"/>
 <org.apache.ofbiz.security.securitygroup.SecurityGroupPermission groupId="COMMERCE_SUPER"  fromDate="2026-07-21 13:15"/>
 
+<!-- As of still the  hotwax.user is the admin we need to Assocaited him with any of the Facility , else TransferOrder App giving the issue , No facility is associated with the user as of now I associated with on FacilityId-->
+<org.apache.ofbiz.product.facility.FacilityParty facilityId="NN_ST_ATL" partyId="" roleTypeId="WAREHOUSE_MANAGER" fromDate="2026-07-22 05:18"/>
 
+  <!--  Here is the Data that need to enter for the shipping locations-->
 <org.apache.ofbiz.party.contact.ContactMech contactMechId="M10001" contactMechTypeId="POSTAL_ADDRESS"/> 
 <org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_ATL" contactMechId="M10001" fromDate="2001-01-01 00:00:00.0"/>
 <org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_ATL" contactMechId="M10001" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
@@ -70,3 +73,18 @@
 <org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_DC_TX" contactMechId="M10013" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
 <org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10013" toName="NN Texas DC" address1="1100 Commerce St" address2="Warehouse 3" city="San Antonio" postalCode="78205" latitude="29.4241" longitude="-98.4936"/>
 
+<!-- We also need to add the OwnerPartyId in the facility entity as on the Recive and complete the service call store#ProductAverageCost  which need the OwnerPartyId for its operation -->
+
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_DC_CA" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_DC_GA" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_DC_NJ" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_DC_TX" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_ATL" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_AUS" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_CHI" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_DAL" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_LA" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_MIA" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_NYC" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_SEA" ownerPartyId="COMPANY"/>
+<org.apache.ofbiz.product.facility.Facility facilityId="NN_ST_SF" ownerPartyId="COMPANY"/>
