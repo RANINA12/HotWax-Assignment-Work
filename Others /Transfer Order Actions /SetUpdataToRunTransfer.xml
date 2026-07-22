@@ -1,0 +1,72 @@
+<!-- We also need the Permission to be set up for the Transfer App-->
+
+<org.apache.ofbiz.security.securitygroup.SecurityPermission permissionId="ORD_TRANSFER_ORDER_VIEW" description="Transfer App view"/>
+<org.apache.ofbiz.security.securitygroup.SecurityPermission permissionId="ORD_TRANSFER_ORDER_ADMIN" description="Transfer App Admin"/>
+<org.apache.ofbiz.security.securitygroup.SecurityGroupPermission groupId="COMMERCE_SUPER"  fromDate="2026-07-21 13:15"/>
+
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10001" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_ATL" contactMechId="M10001" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_ATL" contactMechId="M10001" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10001" toName="NN Atlanta Store" address1="123 Peachtree St NE" address2="Suite 100" city="Atlanta" postalCode="30303" latitude="33.7490" longitude="-84.3880"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10002" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_AUS" contactMechId="M10002" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_AUS" contactMechId="M10002" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10002" toName="NN Austin Store" address1="456 Congress Ave" address2="Suite 200" city="Austin" postalCode="78701" latitude="30.2672" longitude="-97.7431"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10003" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_CHI" contactMechId="M10003" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_CHI" contactMechId="M10003" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10003" toName="NN Chicago Store" address1="789 W Madison St" address2="Floor 2" city="Chicago" postalCode="60661" latitude="41.8781" longitude="-87.6298"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10004" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_DAL" contactMechId="M10004" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_DAL" contactMechId="M10004" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10004" toName="NN Dallas Store" address1="101 Main St" address2="Suite 300" city="Dallas" postalCode="75201" latitude="32.7767" longitude="-96.7970"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10005" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_LA" contactMechId="M10005" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_LA" contactMechId="M10005" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10005" toName="NN Los Angeles Store" address1="500 Spring St" address2="Suite 400" city="Los Angeles" postalCode="90013" latitude="34.0522" longitude="-118.2437"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10006" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_MIA" contactMechId="M10006" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_MIA" contactMechId="M10006" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10006" toName="NN Miami Store" address1="250 Biscayne Blvd" address2="Suite 500" city="Miami" postalCode="33132" latitude="25.7617" longitude="-80.1918"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10007" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_NYC" contactMechId="M10007" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_NYC" contactMechId="M10007" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10007" toName="NN New York Store" address1="350 5th Ave" address2="Floor 10" city="New York" postalCode="10118" latitude="40.7128" longitude="-74.0060"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10008" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_SEA" contactMechId="M10008" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_SEA" contactMechId="M10008" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10008" toName="NN Seattle Store" address1="600 Pine St" address2="Suite 600" city="Seattle" postalCode="98101" latitude="47.6062" longitude="-122.3321"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10009" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_ST_SF" contactMechId="M10009" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_ST_SF" contactMechId="M10009" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10009" toName="NN San Francisco Store" address1="700 Market St" address2="Suite 700" city="San Francisco" postalCode="94103" latitude="37.7749" longitude="-122.4194"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10010" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_DC_CA" contactMechId="M10010" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_DC_CA" contactMechId="M10010" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10010" toName="NN California DC" address1="800 Ocean Park Blvd" address2="Warehouse A" city="Santa Monica" postalCode="90405" latitude="34.0195" longitude="-118.4912"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10011" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_DC_GA" contactMechId="M10011" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_DC_GA" contactMechId="M10011" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10011" toName="NN Georgia DC" address1="900 Aviation Blvd" address2="Dock 5" city="Atlanta" postalCode="30354" latitude="33.6407" longitude="-84.4277"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10012" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_DC_NJ" contactMechId="M10012" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_DC_NJ" contactMechId="M10012" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10012" toName="NN New Jersey DC" address1="1000 Broad St" address2="Building B" city="Newark" postalCode="07102" latitude="40.7357" longitude="-74.1724"/>
+
+<org.apache.ofbiz.party.contact.ContactMech contactMechId="M10013" contactMechTypeId="POSTAL_ADDRESS"/> 
+<org.apache.ofbiz.product.facility.FacilityContactMech facilityId="NN_DC_TX" contactMechId="M10013" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.product.facility.FacilityContactMechPurpose facilityId="NN_DC_TX" contactMechId="M10013" contactMechPurposeTypeId="SHIPPING_LOCATION" fromDate="2001-01-01 00:00:00.0"/>
+<org.apache.ofbiz.party.contact.PostalAddress contactMechId="M10013" toName="NN Texas DC" address1="1100 Commerce St" address2="Warehouse 3" city="San Antonio" postalCode="78205" latitude="29.4241" longitude="-98.4936"/>
+
