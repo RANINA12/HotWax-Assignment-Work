@@ -2,7 +2,12 @@
 
 <org.apache.ofbiz.security.securitygroup.SecurityPermission permissionId="ORD_TRANSFER_ORDER_VIEW" description="Transfer App view"/>
 <org.apache.ofbiz.security.securitygroup.SecurityPermission permissionId="ORD_TRANSFER_ORDER_ADMIN" description="Transfer App Admin"/>
-<org.apache.ofbiz.security.securitygroup.SecurityGroupPermission groupId="COMMERCE_SUPER"  fromDate="2026-07-21 13:15"/>
+<org.apache.ofbiz.security.securitygroup.SecurityPermission permissionId="STOREFULFILLMENT_ADMIN" description="Transfer App Store Fulfillment Permission"/>
+<org.apache.ofbiz.security.securitygroup.SecurityPermission permissionId="ORD_TRANSFER_ORDER_CANCEL" description="Transfer App Order Cancel"/>
+<org.apache.ofbiz.security.securitygroup.SecurityGroupPermission groupId="COMMERCE_SUPER" permissionId="ORD_TRANSFER_ORDER_ADMIN"  fromDate="2026-07-21 13:15"/>
+<org.apache.ofbiz.security.securitygroup.SecurityGroupPermission groupId="COMMERCE_SUPER" permissionId="ORD_TRANSFER_ORDER_VIEW"  fromDate="2026-07-21 13:15"/>
+<org.apache.ofbiz.security.securitygroup.SecurityGroupPermission groupId="COMMERCE_SUPER" permissionId="STOREFULFILLMENT_ADMIN"  fromDate="2026-07-21 13:15"/>
+<org.apache.ofbiz.security.securitygroup.SecurityGroupPermission groupId="COMMERCE_SUPER" permissionId="ORD_TRANSFER_ORDER_CANCEL"  fromDate="2026-07-21 13:15"/>
 
 
   <!--  Here is the Data that need to enter for the shipping locations-->
